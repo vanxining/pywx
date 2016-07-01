@@ -1,0 +1,118 @@
+// Z:\wxPython\src\_richtexthtml.i
+// Z:\wxPython\src\_richtextprint.i
+// Z:\wxPython\src\_richtextxml.i
+// Z:\wxPython\src\_sashwin.i
+// Z:\wxPython\src\_scrolbar.i
+// Z:\wxPython\src\_settings.i
+Z:\wxPython\src\_sizers.i
+// Z:\wxPython\src\_slider.i
+// Z:\wxPython\src\_sound.i
+// Z:\wxPython\src\_spin.i
+// Z:\wxPython\src\_splitter.i
+// Z:\wxPython\src\_srchctrl.i
+Z:\wxPython\src\_statctrls.i
+Z:\wxPython\src\_statusbar.i
+// Z:\wxPython\src\_stc_docstrings.i
+// Z:\wxPython\src\_stc_gendocs.i
+// Z:\wxPython\src\_stdpaths.i
+Z:\wxPython\src\_stockobjs.i
+Z:\wxPython\src\_streams.i
+// Z:\wxPython\src\_taskbar.i
+// Z:\wxPython\src\_template.i
+Z:\wxPython\src\_textctrl.i
+// Z:\wxPython\src\_tglbtn.i
+Z:\wxPython\src\_timer.i
+// Z:\wxPython\src\_tipdlg.i
+// Z:\wxPython\src\_tipwin.i
+// Z:\wxPython\src\_toolbar.i
+Z:\wxPython\src\_toplvl.i
+Z:\wxPython\src\_treectrl.i
+// Z:\wxPython\src\_uiaction.i
+// Z:\wxPython\src\_validator.i
+// Z:\wxPython\src\_versioninfo.i
+// Z:\wxPython\src\_vscroll.i
+Z:\wxPython\src\_window.i
+// Z:\wxPython\src\_withimages.i
+// Z:\wxPython\src\_xml.i
+// Z:\wxPython\src\_xmlhandler.i
+// Z:\wxPython\src\_xmlres.i
+// Z:\wxPython\src\_xmlsub.i
+// Z:\wxPython\src\_about.i
+// Z:\wxPython\src\_accel.i
+Z:\wxPython\src\_app.i
+// Z:\wxPython\src\_artprov.i
+// Z:\wxPython\src\_aui_docstrings.i
+// Z:\wxPython\src\_axbase.i
+Z:\wxPython\src\_bitmap.i
+// Z:\wxPython\src\_bookctrl.i
+Z:\wxPython\src\_brush.i
+Z:\wxPython\src\_button.i
+Z:\wxPython\src\_checkbox.i
+// Z:\wxPython\src\_choice.i
+// Z:\wxPython\src\_clipbrd.i
+// Z:\wxPython\src\_cmdlinkbtn.i
+Z:\wxPython\src\_cmndlgs.i
+// Z:\wxPython\src\_collpane.i
+Z:\wxPython\src\_colour.i
+// Z:\wxPython\src\_combobox.i
+// Z:\wxPython\src\_config.i
+// Z:\wxPython\src\_constraints.i
+Z:\wxPython\src\_control.i
+Z:\wxPython\src\_core_api.i
+// Z:\wxPython\src\_cshelp.i
+Z:\wxPython\src\_cursor.i
+Z:\wxPython\src\_dataobj.i
+// Z:\wxPython\src\_datectrl.i
+// Z:\wxPython\src\_datetime.i
+Z:\wxPython\src\_dc.i
+Z:\wxPython\src\_defs.i
+// Z:\wxPython\src\_dirctrl.i
+// Z:\wxPython\src\_display.i
+// Z:\wxPython\src\_dnd.i
+// Z:\wxPython\src\_dragimg.i
+// Z:\wxPython\src\_effects.i
+Z:\wxPython\src\_event.i
+Z:\wxPython\src\_evthandler.i
+Z:\wxPython\src\_evtloop.i
+// Z:\wxPython\src\_filectrl.i
+// Z:\wxPython\src\_filesys.i
+Z:\wxPython\src\_font.i
+Z:\wxPython\src\_functions.i
+// Z:\wxPython\src\_gauge.i
+// Z:\wxPython\src\_gbsizer.i
+Z:\wxPython\src\_gdicmn.i
+Z:\wxPython\src\_gdiobj.i
+Z:\wxPython\src\_graphics.i
+// Z:\wxPython\src\_headercol.i
+// Z:\wxPython\src\_hyperlink.i
+Z:\wxPython\src\_icon.i
+Z:\wxPython\src\_image.i
+Z:\wxPython\src\_imaglist.i
+// Z:\wxPython\src\_infobar.i
+// Z:\wxPython\src\_intl.i
+// Z:\wxPython\src\_joystick.i
+Z:\wxPython\src\_keyboardstate.i
+Z:\wxPython\src\_listbox.i
+Z:\wxPython\src\_listctrl.i
+// Z:\wxPython\src\_log.i
+// Z:\wxPython\src\_mdi.i
+Z:\wxPython\src\_menu.i
+// Z:\wxPython\src\_mimetype.i
+// Z:\wxPython\src\_misc.i
+Z:\wxPython\src\_mousestate.i
+// Z:\wxPython\src\_notebook.i
+Z:\wxPython\src\_obj.i
+// Z:\wxPython\src\_overlay.i
+// Z:\wxPython\src\_palette.i
+// Z:\wxPython\src\_panel.i
+Z:\wxPython\src\_pen.i
+// Z:\wxPython\src\_picker.i
+// Z:\wxPython\src\_popupwin.i
+// Z:\wxPython\src\_power.i
+// Z:\wxPython\src\_printfw.i
+Z:\wxPython\src\_process.i
+// Z:\wxPython\src\_radio.i
+Z:\wxPython\src\_region.i
+// Z:\wxPython\src\_renderer.i
+// Z:\wxPython\src\_richtextbuffer.i
+// Z:\wxPython\src\_richtextctrl.i
