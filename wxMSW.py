@@ -6,12 +6,12 @@ import Module
 import Class
 
 
+# noinspection PyMethodMayBeStatic
 class WxPythonNamer(Module.PythonNamer):
 
     _wx_name_pattern = re.compile(r"(\W)wx([A-Z])")
 
-    @staticmethod
-    def package():
+    def package(self):
         return "wx"
 
     def _to_python(self, name):
@@ -110,7 +110,7 @@ class WxFlagsAssigner(Module.FlagsAssigner):
         return "pbpp::LifeTime::PYTHON"
 
 
-class WxBlackList(Module.BlackList):
+class WxBlacklist(Module.Blacklist):
 
     _class_patterns = [
         re.compile(r"wxEventTypeTag"),
@@ -392,7 +392,7 @@ class WxBlackList(Module.BlackList):
     ]
 
     def __init__(self):
-        Module.BlackList.__init__(self)
+        Module.Blacklist.__init__(self)
 
         for cls in self._simple_dummy_classes:
             self._simple_add_dummy_class(cls)
@@ -627,7 +627,7 @@ def wx():
                        WxPythonNamer(),
                        WxHeaderProvider(),
                        WxFlagsAssigner(),
-                       WxBlackList())
+                       WxBlacklist())
 
     process_header = Module.process_header
 

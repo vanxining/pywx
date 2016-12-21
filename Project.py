@@ -113,7 +113,7 @@ class Project(ProjectBase.ProjectBase):
             __wx__.WxPythonNamer(),
             __wx__.WxHeaderProvider(),
             __wx__.WxFlagsAssigner(),
-            __wx__.WxBlackList()
+            __wx__.WxBlacklist()
         )
 
         pdl = __wx__.ProcessingDoneListener()
@@ -127,7 +127,7 @@ class Project(ProjectBase.ProjectBase):
                 __wx__.WxPythonNamer(),
                 __wx__.WxHeaderProvider(),
                 __wx__.WxFlagsAssigner(),
-                __wx__.WxBlackList()
+                __wx__.WxBlacklist()
             )
 
             pdl = __wx__.ProcessingDoneListener()
