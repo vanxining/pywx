@@ -1,9 +1,10 @@
 import os
 import re
 
+import Class
 import Converters
 import Module
-import Class
+import Registry
 
 
 # noinspection PyMethodMayBeStatic
@@ -159,6 +160,8 @@ class WxBlacklist(Module.Blacklist):
         "wxTextEntryBase::EventsSuppressor",
         "wxStreamToTextRedirector",
         "wxMenuInvokingWindowSetter",
+
+        "wxXmlResourceHandlerImpl",
     }
 
     _class_exceptions = [
@@ -389,6 +392,13 @@ class WxBlacklist(Module.Blacklist):
         # wxListBox
         "wxArrayStringsAdapter",  # TODO: perhaps this is useful
         "wxArrayTreeItemIds",  # wxTreeCtrl
+
+        # wxXmlResource
+        "wxXmlResourceHandler",
+        "wxXmlDocument",
+        "wxXmlNode",
+        "wxFileName",
+        "wxPanel",
     ]
 
     def __init__(self):

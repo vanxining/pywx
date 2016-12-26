@@ -1,6 +1,7 @@
 D:\Work\pywx\Adapters\PyApp.hxx
 D:\Work\pywx\Adapters\PyBind.hxx
 D:\Work\pywx\Adapters\More.hxx
+D:\Work\pywx\Adapters\XRC.hxx
 D:\Work\pywx\Hacks\_EVENTTAGS.hxx
 D:\Work\pywx\Hacks\_ENUMERATIONS.hpp
 D:\Work\pywx\Hacks\_STOCKGDI.hxx
@@ -73,3 +74,4 @@ D:\Work\CppLibs\wxMSW\include\wx\checkbox.h
 D:\Work\CppLibs\wxMSW\include\wx\systhemectrl.h
 D:\Work\CppLibs\wxMSW\include\wx\treebase.h
 D:\Work\CppLibs\wxMSW\include\wx\treectrl.h
+D:\Work\CppLibs\wxMSW\include\wx\xrc\xmlres.h

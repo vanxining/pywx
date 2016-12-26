@@ -187,20 +187,37 @@ function wx.Configure( shouldSetTarget, wxVer )
         end
 
         -- Set wxWidgets libraries to link. The order we insert matters for the linker.
+
+        local wxLibs = {
+            "core", "adv", "html", "xrc"
+        }
+        local wxLibs2 = {
+            "wxexpat", "wxjpeg", "wxpng", "wxregexu", "wxtiff", "wxzlib"
+        }
         
         configuration { "Debug", "not StaticLib" }
-            links { "wxmsw" .. wx_ver .. "ud_core", "wxbase" ..  wx_ver .. "ud" }
-            links { "wxmsw" .. wx_ver .. "ud_adv" }
-            links { "wxexpatd", "wxjpegd", "wxpngd", "wxregexud", "wxtiffd", "wxzlibd" }
+            links { "wxbase" ..  wx_ver .. "ud" }
+            links { "wxbase" ..  wx_ver .. "ud_xml" }
+            for _, lib in ipairs( wxLibs ) do
+                links { "wxmsw" .. wx_ver .. "ud_" .. lib }
+            end
+            for _, lib in ipairs( wxLibs2 ) do
+                links { lib .. "d" }
+            end
             for _, lib in ipairs( winLibs ) do
                 links { lib }
             end
             
         configuration { "Release", "not StaticLib" }
-            links { "wxmsw" .. wx_ver .. "u_core", "wxbase" ..  wx_ver .. "u" }
-            links { "wxmsw" .. wx_ver .. "u_adv" }
-            links { "wxexpat", "wxjpeg", "wxpng", "wxregexu", "wxtiff", "wxzlib" }
-            for _, lib in ipairs( winLibs) do
+            links { "wxbase" ..  wx_ver .. "u" }
+            links { "wxbase" ..  wx_ver .. "u_xml" }
+            for _, lib in ipairs( wxLibs ) do
+                links { "wxmsw" .. wx_ver .. "u_" .. lib }
+            end
+            for _, lib in ipairs( wxLibs2 ) do
+                links { lib }
+            end
+            for _, lib in ipairs( winLibs ) do
                 links { lib }
             end
 

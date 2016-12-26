@@ -6,8 +6,6 @@ import time
 
 import wx
 
-#-------------------------------------------------------------------#
-
 
 def NewEvent():
     evttype = wx.PyNewEventType(False)
@@ -26,13 +24,12 @@ def NewCommandEvent():
     evttype = wx.PyNewEventType(True)
 
     class _Event(wx.PyCommandEvent):
+        # noinspection PyShadowingBuiltins
         def __init__(self, id, **kw):
             wx.PyCommandEvent.__init__(self, evttype, id)
             self.__dict__.update(kw)
 
     return _Event, evttype
-
-#-------------------------------------------------------------------#
 
 
 class App(wx.PyApp):
@@ -41,15 +38,13 @@ class App(wx.PyApp):
         self._BootstrapApp()
 
     def OnInit(self):
-        self.win = MyFrame()
-        self.win.Show()
+        win = MyFrame()
+        win.Show()
 
         for handler in wx.Image.GetHandlers():
             print(handler.GetClassInfo().GetClassName())
 
         return True
-
-#-------------------------------------------------------------------#
 
 
 (WorkerFinishEvent, EVT_WORKER_FIN) = NewEvent()
@@ -71,15 +66,16 @@ class Worker:
         evt.hello = "Hello, world!"
         wx.PostEvent(self.evt_handler, evt)
 
-#-------------------------------------------------------------------#
 
-
+# noinspection PyMethodMayBeStatic
 class MyFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, u"开始", size=wx.DefaultSize)
 
+        self.SetFont(wx.Font(9, 70, 90, 90, False, u"Segoe UI"))
+
         usable = wx.GetClientDisplayRect()
-        w = int(usable.width * 0.5)
+        w = max(int(usable.width * 0.5), 750)
         h = int(usable.height * 0.75)
         self.SetSize(w, h)
         self.Centre(wx.BOTH)
@@ -87,14 +83,13 @@ class MyFrame(wx.Frame):
         self.SetIcon(wx.Icon(u"res/drawable/Icon.ico", wx.BITMAP_TYPE_ICO))
         self.bmp = wx.Bitmap(u"res/drawable/tag.bmp", wx.BITMAP_TYPE_BMP)
 
-        self.Centre(wx.BOTH)
-
         self.inurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(90, 190), size=wx.Size(290, -1))
         self.outurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(90, 220), size=wx.Size(290, -1))
 
         self.begin_btn = wx.Button(self, wx.ID_ANY, u"开始转换(&B)", pos=wx.Point(90, 255))
         self.stop_btn = wx.Button(self, wx.ID_ANY, u"关闭窗口(&S)", pos=wx.Point(90, 285))
         self.thread_btn = wx.Button(self, wx.ID_ANY, u"创建线程(&C)", pos=wx.Point(90, 315))
+        self.xrc_btn = wx.Button(self, wx.ID_ANY, u"XRC(&X)", pos=wx.Point(90, 345))
 
         wx.PyBind(self, wx.EVT_ICONIZE, self.OnIconize)
         wx.PyBind(self, wx.EVT_PAINT, self.OnPaint)
@@ -104,6 +99,7 @@ class MyFrame(wx.Frame):
         wx.PyBind(self.stop_btn, wx.EVT_BUTTON, self.OnStop)
         wx.PyBind(self.thread_btn, wx.EVT_BUTTON, self.OnThread)
         wx.PyBind(self, EVT_WORKER_FIN, self.OnThreadEnded)
+        wx.PyBind(self.xrc_btn, wx.EVT_BUTTON, self.OnXRC)
 
         for chd in self.GetChildren():
             size = chd.GetSize()
@@ -158,7 +154,15 @@ class MyFrame(wx.Frame):
     def OnThreadEnded(self, event):
         print("OnThreadEnded() -- [%s]" % event.hello)
 
-#-------------------------------------------------------------------#
+    def OnXRC(self, event):
+        res = wx.XmlResource.Get()
+        res.InitAllHandlers()
+
+        if res.Load(u"test.xrc"):
+            frame = res.LoadFrame(self, u"main_window")
+            frame.Show()
+        else:
+            print("OnXRC(): failed to load resources")
 
 
 if __name__ == "__main__":
