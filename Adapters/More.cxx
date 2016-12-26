@@ -31,6 +31,19 @@ PyObject *InputStream_Read(wxInputStream *ins) {
     return PyUnicode_FromStringAndSize(buf.data(), buf.length());
 }
 
+PyObject *DropFilesEvent_GetFiles(wxDropFilesEvent *event) {
+    const int n = event->GetNumberOfFiles();
+    wxString *files = event->GetFiles();
+    PyObject *list = PyList_New(n);
+
+    for (int i = 0; i < n; i++) {
+        PyObject *item = PyUnicode_FromWideChar(files[i].wx_str(), files[i].length());
+        PyList_SET_ITEM(list, i, item);
+    }
+
+    return list;
+}
+
 void wxSetProcessDPIAware() {
 #ifdef __WXMSW__
     typedef BOOL (WINAPI *SetProcessDPIAware_t)(void);

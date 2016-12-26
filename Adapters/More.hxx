@@ -12,6 +12,7 @@
     struct PyObject;
     class wxOutputStream;
     class wxInputStream;
+    class wxDropFilesEvent;
 #endif
 
 // bool wxOutputStream::WriteAll(const void *buffer, unsigned int size)
@@ -21,6 +22,9 @@ PyObject *OutputStream_Write(wxOutputStream *outs, PyObject *bytes);
 // 读取整个流，直到遇到一个错误（如 EOF）
 // @return 一个二进制数组：Python 2.x 下为 str 类型，3.x 下为 bytes 类型
 PyObject *InputStream_Read(wxInputStream *ins);
+
+// 这里需要返回一个 wxString 的数组
+PyObject *DropFilesEvent_GetFiles(wxDropFilesEvent *event);
 
 /// HiDPI 支持
 void wxSetProcessDPIAware();
