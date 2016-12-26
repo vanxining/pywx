@@ -6,9 +6,9 @@ import re
 import ProjectBase
 import Converters
 import Module
-
-from Util import load, load2
 import Types
+import Util
+
 
 _sep = os.path.sep
 
@@ -66,7 +66,7 @@ class Project(ProjectBase.ProjectBase):
     def __init__(self):
         ProjectBase.ProjectBase.__init__(self, None)
 
-        __wx__ = load("wxMSW")
+        __wx__ = Util.load("wxMSW")
 
         Converters.add(__wx__.WxStringConv())
         Converters.add(Converters.StrConv())
@@ -115,7 +115,7 @@ class Project(ProjectBase.ProjectBase):
         self.root_mod.processing_done_listener = pdl
 
     def try_update(self):
-        __wx__, reloaded = load2("wxMSW")
+        __wx__, reloaded = Util.load2("wxMSW")
 
         if reloaded:
             self.root_mod.update_strategies(
@@ -137,7 +137,7 @@ def test():
         up = os.path.realpath(cd + "/..")
         sys.path = [up,] + sys.path
 
-        __wx__ = load("wxMSW")
+        __wx__ = Util.load("wxMSW")
         pdl = __wx__.ProcessingDoneListener()
 
         proj = Proj()

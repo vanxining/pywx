@@ -21,8 +21,7 @@
 #define PYEVENT(tag) if (event == tag) { \
     if (unbind) { \
         ret = p->Unbind(tag, s_functor, id, lastId, userData); \
-    } \
-    else { \
+    } else { \
         p->Bind(tag, s_functor, id, lastId, userData); \
     } \
     \
@@ -583,17 +582,14 @@ bool DoPyBind
         wxEventTypeTag<wxPyCommandEvent> tag(event.GetEventType());
         if (unbind) {
             ret = p->Unbind(tag, s_functor, id, lastId, userData);
-        }
-        else {
+        } else {
             p->Bind(tag, s_functor, id, lastId, userData);
         }
-    }
-    else {
+    } else {
         wxEventTypeTag<wxPyEvent> tag(event.GetEventType());
         if (unbind) {
             ret = p->Unbind(tag, s_functor, id, lastId, userData);
-        }
-        else {
+        } else {
             p->Bind(tag, s_functor, id, lastId, userData);
         }
     }

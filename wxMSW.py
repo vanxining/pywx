@@ -520,14 +520,10 @@ class WxStringConv(Converters.Converter):
         return arg_name + ".wx_str()"
 
     def build(self, cpp_type, var_name, py_var_name, namer, raii):
-        if raii:
-            return "PyObjectPtr %s(PyUnicode_FromWideChar(%s.wx_str(), %s.length()));" % (
-                py_var_name, var_name, var_name
-            )
-        else:
-            return "PyObject *%s = PyUnicode_FromWideChar(%s.wx_str(), %s.length());" % (
-                py_var_name, var_name, var_name
-            )
+        common_part = "PyUnicode_FromWideChar({1}.wx_str(), {1}.length())"
+        boilerplate = "PyObjectPtr {{0}}({});" if raii else "PyObject *{{0}} = {};"
+
+        return boilerplate.format(common_part).format(py_var_name, var_name)
 
 
 class WxListConv(Converters.ListConv):
@@ -556,12 +552,12 @@ class WxDictConv(Converters.DictConv):
         return Converters.DictConv.match(self, cpp_type)
 
 
+# noinspection PyMethodMayBeStatic
 class ProcessingDoneListener:
     def __init__(self):
         pass
 
-    @staticmethod
-    def on_processing_done(module):
+    def on_processing_done(self, module):
         # Remove the duplicated declarations
         headers = []
         for header in module.header_jar.headers:
@@ -602,90 +598,35 @@ class ProcessingDoneListener:
 
         # TODO: Add support for reparsing one single file
 
-        inj = ({
-                "FUNC": (("TextEntryBase_GetSelection", "GetSelection"),),
-                "HEADERS": ("Adapters/More.hxx",),
-                "CLASSES": ("wxTextEntryBase", "wxTextEntry", "wxTextCtrl"),
-            }, {
-                "FUNC": (("OutputStream_Write", "Write"),),
-                "HEADERS": ("Adapters/More.hxx",),
-                "CLASSES": ("wxOutputStream",
-                            "wxBufferedOutputStream",),
-            }, {
-                "FUNC": (("InputStream_Read", "Read"),),
-                "HEADERS": ("Adapters/More.hxx",),
-                "CLASSES": ("wxInputStream",
-                            "wxBufferedInputStream",),
-            },
+        class Injection(object):
+            def __init__(self, **kwargs):
+                self.__dict__.update(kwargs)
+
+        inj = (
+            Injection(cxx_name="TextEntryBase_GetSelection",
+                      py_name="GetSelection",
+                      headers=("Adapters/More.hxx",),
+                      classes=("wxTextEntryBase", "wxTextEntry", "wxTextCtrl",)),
+
+            Injection(cxx_name="OutputStream_Write",
+                      py_name="Write",
+                      headers=("Adapters/More.hxx",),
+                      classes=("wxOutputStream", "wxBufferedOutputStream",)),
+
+            Injection(cxx_name="InputStream_Read",
+                      py_name="Read",
+                      headers=("Adapters/More.hxx",),
+                      classes=("wxInputStream", "wxBufferedInputStream",)),
+
+            Injection(cxx_name="DropFilesEvent_GetFiles",
+                      py_name="GetFiles",
+                      headers=("Adapters/More.hxx",),
+                      classes=("wxDropFilesEvent",)),
         )
 
         for m in inj:
-            for names in m["FUNC"]:
-                ff = module.free_functions.methods.pop(names[0], None)
-                if ff:
-                    for cls_name in m["CLASSES"]:
-                        cls = Registry.get_class(cls_name)
-                        cls.inject_as_method(ff, names[1], m["HEADERS"])
-
-
-def wx():
-    Converters.add(WxStringConv())
-    Converters.add(Converters.StrConv())
-    Converters.add(Converters.WcsConv())
-
-    m = Module.Module("wx", None,
-                       WxPythonNamer(),
-                       WxHeaderProvider(),
-                       WxFlagsAssigner(),
-                       WxBlacklist())
-
-    process_header = Module.process_header
-
-    process_header(m, ("defs.h",), "Xml/defs.xml")
-    process_header(m, ("object.h", "rtti.h",), "Xml/object.xml")
-    process_header(m, ("gdicmn.h",), "Xml/gdicmn.xml")
-    process_header(m, ("gdiobj.h", "colour.h",), "Xml/colour.xml")
-    process_header(m, ("gdiimage.h",), "Xml/gdiimage.xml")
-    process_header(m, ("fontutil.h", "font.h",), "Xml/fontutil.xml")
-    process_header(m, ("cursor.h",), "Xml/cursor.xml")
-    process_header(m, ("brush.h",), "Xml/brush.xml")
-    process_header(m, ("pen.h",), "Xml/pen.xml")
-    process_header(m, ("stream.h", "image.h", "bitmap.h",), "Xml/bitmap.xml")
-
-    m.finish_processing()
-    m.generate(r'D:\Work\VdkControl\Python\wx', ext="cxx")
-
-    return m
-
-
-import cPickle as pickle
-import Registry
-
-
-def test_save(m):
-    with open("wx.dat", "wb") as outf:
-        m.prepare_for_serializing()
-        Registry.clear()
-        pickle.dump(m, outf)
-
-
-def test_load():
-    with open("wx.dat", "rb") as inf:
-        m2 = pickle.load(inf)
-
-        for e in m2.enums.values:
-            print e.name, e.val
-
-        print ""
-
-        Registry.clear()
-        Registry.restore_from_module(m2)
-
-        for cls in Registry._registry.values():
-            print cls.full_name, "#VM =", len(cls.virtual_members)
-
-
-if __name__ == "__main__":
-    mod = wx()
-    test_save(mod)
-    test_load()
+            ff = module.free_functions.methods.pop(m.cxx_name, None)
+            if ff:
+                for cls_name in m.classes:
+                    cls = Registry.get_class(cls_name)
+                    cls.inject_as_method(ff, m.py_name, m.headers)

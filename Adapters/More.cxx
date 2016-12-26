@@ -47,9 +47,9 @@ PyObject *DropFilesEvent_GetFiles(wxDropFilesEvent *event) {
 void wxSetProcessDPIAware() {
 #ifdef __WXMSW__
     typedef BOOL (WINAPI *SetProcessDPIAware_t)(void);
-    HINSTANCE hDLL = ::LoadLibrary(L"user32.dll");
+    HINSTANCE hDLL = LoadLibrary(L"user32.dll");
     SetProcessDPIAware_t pfnSetProcessDPIAware =
-        (SetProcessDPIAware_t) ::GetProcAddress(hDLL, "SetProcessDPIAware");
+        (SetProcessDPIAware_t) GetProcAddress(hDLL, "SetProcessDPIAware");
 
     if (pfnSetProcessDPIAware) {
         pfnSetProcessDPIAware();
