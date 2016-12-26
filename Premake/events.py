@@ -229,7 +229,7 @@ with open("../Adapters/PyBind.cxx", "w") as outf:
 with open("../Hacks/_EVENTTAGS.hxx", "w") as outf:
     sys.stdout = outf
 
-    print('''#ifdef __GCCXML__
+    print('''#ifdef __CASTXML__
 ''')
 
     for tag in tags:

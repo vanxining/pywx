@@ -3,11 +3,6 @@ import sys
 import StringIO
 import re
 
-
-if "PBPP" in os.environ and os.environ["PBPP"] not in sys.path:
-    sys.path = [os.environ["PBPP"],] + sys.path
-
-
 import ProjectBase
 import Converters
 import Module
@@ -23,12 +18,12 @@ output_cxx_ext = ".cxx"
 header_wrappers_dir = os.path.dirname(__file__) + _sep + "Hacks" + _sep
 header_wrappers_ext = ".pbpp.hxx"
 
-gccxml_bin = r'D:\CppSource\Temp\CastXML\vcbuild\bin\RelWithDebInfo\castxml.exe'
-_gccxml_args = r'--castxml-gccxml -w -x c++ -std=c++14 -fms-compatibility-version=19 -I"D:\Work\CppLibs\wxMSW\include" -I"D:\Work\CppLibs\wxMSW\lib\vc_lib\mswu" -D__GCCXML__ -DWXDLLIMPEXP_CORE'
+castxml_bin = r'castxml'
+_castxml_args = r'--castxml-output=1 -w -x c++ -std=c++14 -fms-compatibility-version=19 -I"D:\Work\CppLibs\wxMSW\include" -I"D:\Work\CppLibs\wxMSW\lib\vc_lib\mswu" -D__CASTXML__ -DWXDLLIMPEXP_CORE'
 
 
-def gccxml_args(header_path):
-    return _gccxml_args
+def castxml_args(header_path):
+    return _castxml_args
 
 
 def select_headers(header_path, xml_path):

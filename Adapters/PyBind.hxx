@@ -7,7 +7,7 @@
 #pragma once
 #include "wx/event.h"
 
-#ifndef __GCCXML__
+#ifndef __CASTXML__
 #   include "../Gen/_PySelf.hxx"
 #else
     class _PySelf {};

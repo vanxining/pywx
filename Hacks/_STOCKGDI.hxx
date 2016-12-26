@@ -1,5 +1,5 @@
 
-#ifdef __GCCXML__
+#ifdef __CASTXML__
 
 class wxFont;
 class wxPen;

@@ -35,6 +35,6 @@ for f in open("Enums.txt"):
                 enum = False
 
 
-print "#ifdef __GCCXML__\n"
+print "#ifdef __CASTXML__\n"
 print "\n".join(enums)
 print "#endif"

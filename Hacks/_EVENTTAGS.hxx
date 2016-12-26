@@ -1,4 +1,4 @@
-#ifdef __GCCXML__
+#ifdef __CASTXML__
 
 extern int wxEVT_BUTTON;
 extern int wxEVT_CHECKBOX;

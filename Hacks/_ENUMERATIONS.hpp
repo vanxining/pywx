@@ -1,4 +1,4 @@
-#ifdef __GCCXML__
+#ifdef __CASTXML__
 
 // _sizers.i
 // enum { wxEXTEND_LAST_ON_EACH_LINE };

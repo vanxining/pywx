@@ -6,7 +6,7 @@
  **************************************************************/
 #pragma once
 
-#ifndef __GCCXML__
+#ifndef __CASTXML__
 #   include "../Gen/_Python.hxx"
 #else
     struct PyObject;
