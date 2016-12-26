@@ -186,10 +186,6 @@ void wxPyApp::_BootstrapApp() {
             goto __ERR;
         }
 
-        // HiDPI
-        void wxSetProcessDPIAware();
-        wxSetProcessDPIAware();
-
         Py_AtExit(wxEntryCleanup);
 
         haveInitialized = true;
