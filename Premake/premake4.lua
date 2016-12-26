@@ -51,7 +51,7 @@ solution "pywx"
 
         includedirs { python_root .. "/include" }
 
-        defines { "WIN32", "_WINDOWS", "ISOLATION_AWARE_ENABLED" }
+        defines { "WIN32", "_WINDOWS", "ISOLATION_AWARE_ENABLED=1" }
         defines { "PBPP_SUPPORT_THREAD" }
 
         includedirs { "../Gen/Precomp" } -- for StdAfx.hpp

@@ -26,13 +26,55 @@
 #   include <wx/msw/msvcrt.h>
 #endif
 
-#ifdef __WXMSW__             // If building for Windows...
+#ifdef __WXMSW__
 
-#if defined(_WINDLL)
-#   pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' "\
-                           " version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' "\
-                           " language='*'\"")
-#endif // __WXMSW__
+#if PY_MAJOR_VERSION < 3
+
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' "\
+                        " version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' "\
+                        " language='*'\"")
+
+HANDLE g_act_ctx_handle = INVALID_HANDLE_VALUE;
+ULONG_PTR g_act_ctx_cookie = 0;
+
+static void ReportLastError(const char *func_name) {
+    char buf[256];
+    FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), buf, 256, NULL);
+
+    printf("[%s] %s\n", func_name, buf);
+}
+
+static void EnableVisualStyles() {
+    ACTCTX act_ctx;
+    ZeroMemory(&act_ctx, sizeof(act_ctx));
+    act_ctx.cbSize = sizeof(act_ctx);
+    act_ctx.hModule = wxGetInstance();
+    act_ctx.lpResourceName = MAKEINTRESOURCE(2);
+    act_ctx.dwFlags = ACTCTX_FLAG_HMODULE_VALID | ACTCTX_FLAG_RESOURCE_NAME_VALID;
+
+    g_act_ctx_handle = CreateActCtx(&act_ctx);
+    if (g_act_ctx_handle != INVALID_HANDLE_VALUE) {
+        if (ActivateActCtx(g_act_ctx_handle, &g_act_ctx_cookie)) {
+            return;
+        }
+    }
+
+    ReportLastError(__FUNCTION__);
+}
+
+static void DisableVisualStyles() {
+    if (!DeactivateActCtx(0, g_act_ctx_cookie)) {
+        ReportLastError(__FUNCTION__);
+    }
+
+    ReleaseActCtx(g_act_ctx_handle);
+
+    g_act_ctx_cookie = 0;
+    g_act_ctx_handle = INVALID_HANDLE_VALUE;
+}
+
+#endif
 
 //----------------------------------------------------------------------
 // This gets run when the DLL is loaded.  We just need to save the
@@ -54,7 +96,12 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 
 IMPLEMENT_ABSTRACT_CLASS(wxPyApp, wxApp);
 
-wxPyApp::wxPyApp() : m_startupCompleted(false), m_argv(nullptr) {}
+wxPyApp::wxPyApp()
+    : m_startupCompleted(false), m_argv(nullptr) {
+#if defined(__WXMSW__) && PY_MAJOR_VERSION < 3
+    EnableVisualStyles();
+#endif
+}
 
 wxPyApp::~wxPyApp() {
     if (m_argv) {
@@ -70,6 +117,10 @@ wxPyApp::~wxPyApp() {
         delete [] m_argv;
         m_argv = nullptr;
     }
+
+#if defined(__WXMSW__) && PY_MAJOR_VERSION < 3
+    DisableVisualStyles();
+#endif
 }
 
 void wxPyApp::SetStartupComplete(bool complete) {
@@ -142,8 +193,7 @@ void wxPyApp::_BootstrapApp() {
         Py_AtExit(wxEntryCleanup);
 
         haveInitialized = true;
-    }
-    else {
+    } else {
         wxApp::argc = 0;
     }
 
@@ -179,8 +229,7 @@ int wxPyApp::MainLoop() {
 
         retval = wxApp::MainLoop();
         OnExit();
-    }
-    else {
+    } else {
         printf("[wxPyApp::MainLoop] Why? No top level windows...\n");
     }
 
@@ -219,15 +268,13 @@ bool wxPyApp::IsDisplayAvailable() {
     */
     if (CGMainDisplayID() == 0) {
         rv = false;
-    }
-    else
+    } else
 #endif
     {
         // Also foreground the application on the first call as a side-effect.
         if (GetCurrentProcess(&psn) < 0 || SetFrontProcess(&psn) < 0) {
             rv = false;
-        }
-        else {
+        } else {
             rv = true;
         }
     }
