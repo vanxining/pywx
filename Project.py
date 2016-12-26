@@ -127,23 +127,3 @@ class Project(ProjectBase.ProjectBase):
 
             pdl = __wx__.ProcessingDoneListener()
             self.root_mod.processing_done_listener = pdl
-
-
-def test():
-    if os.path.exists("Current.pbpp"):
-        import sys
-
-        cd = os.path.dirname(os.path.realpath(__file__))
-        up = os.path.realpath(cd + "/..")
-        sys.path = [up,] + sys.path
-
-        __wx__ = Util.load("wxMSW")
-        pdl = __wx__.ProcessingDoneListener()
-
-        proj = Proj()
-        proj.load("Current.pbpp")
-        pdl.on_processing_done(proj.root_mod)
-
-
-if __name__ == "__main__":
-    test()
