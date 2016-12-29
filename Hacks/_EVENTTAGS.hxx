@@ -141,6 +141,8 @@ extern int wxEVT_LIST_COL_BEGIN_DRAG;
 extern int wxEVT_LIST_COL_DRAGGING;
 extern int wxEVT_LIST_COL_END_DRAG;
 extern int wxEVT_LIST_ITEM_FOCUSED;
+extern int wxEVT_LIST_ITEM_CHECKED;
+extern int wxEVT_LIST_ITEM_UNCHECKED;
 extern int wxEVT_TREE_BEGIN_DRAG;
 extern int wxEVT_TREE_BEGIN_RDRAG;
 extern int wxEVT_TREE_BEGIN_LABEL_EDIT;
