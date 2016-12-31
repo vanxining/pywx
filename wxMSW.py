@@ -21,7 +21,7 @@ class WxPythonNamer(Module.PythonNamer):
 
         if '<' in name:
             name = self._wx_name_pattern.sub(r"\1\2", name)
-            name = Module.PythonNamer.normalize_template(name)
+            name = self.normalize_template(name)
 
         return name
 
@@ -46,6 +46,7 @@ class WxPythonNamer(Module.PythonNamer):
                 return name + "Type"
 
 
+# noinspection PyMethodMayBeStatic
 class WxHeaderProvider(Module.HeaderProvider):
     def __init__(self):
         Module.HeaderProvider.__init__(self)
@@ -67,12 +68,10 @@ class WxHeaderProvider(Module.HeaderProvider):
         else:
             return []
 
-    @staticmethod
-    def module(name):
+    def module(self, name):
         return []
 
-    @staticmethod
-    def normalize(full_path):
+    def normalize(self, full_path):
         full_path = full_path.replace(os.path.sep, '/')
         full_path = full_path.replace("//", '/')
 
@@ -87,8 +86,7 @@ class WxHeaderProvider(Module.HeaderProvider):
 
         return full_path[(pos + 1):]
 
-    @staticmethod
-    def pch():
+    def pch(self):
         return '#include "StdAfx.hpp"'
 
 
@@ -337,11 +335,11 @@ class WxBlacklist(Module.Blacklist):
         "wxGetDiskSpace(const wxString &, wxDiskspaceSize_t *, wxDiskspaceSize_t *)",
     }
 
-    _return_type_patterns = (
+    _return_type_patterns = [
         re.compile(r"wx(\w)*Sizer [*&]?"),  # TODO: Why?
-    )
+    ]
 
-    _return_types = ()
+    _return_types = []
 
     _global_constants_patterns = [
         re.compile(r"wxEventTypeTag\W"),
@@ -516,12 +514,9 @@ class WxStringConv(Converters.Converter):
     def extracting_code(self, cpp_type, var_name, py_var_name, error_return, namer):
         return cpp_type.declare_var(var_name, "PyUnicode_AsUnicode(%s)" % py_var_name)
 
-    def value_building_interim_var(self, arg_name):
-        return arg_name + ".wx_str()"
-
     def build(self, cpp_type, var_name, py_var_name, namer, raii):
         common_part = "PyUnicode_FromWideChar({1}.wx_str(), {1}.length())"
-        boilerplate = "PyObjectPtr {{0}}({});" if raii else "PyObject *{{0}} = {};"
+        boilerplate = "pbpp::PyObjectPtr {{0}}({});" if raii else "PyObject *{{0}} = {};"
 
         return boilerplate.format(common_part).format(py_var_name, var_name)
 

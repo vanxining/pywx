@@ -14,7 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 PyObject * OutputStream_Write(wxOutputStream *outs, PyObject *bytes) {
-    PyThreadBlocker blocker;
+    pbpp::ThreadBlocker blocker;
 
     bool ok = outs->WriteAll(PyString_AsString(bytes), PyString_Size(bytes));
     return PyBool_FromLong(ok ? 1 : 0);
@@ -27,7 +27,7 @@ PyObject *InputStream_Read(wxInputStream *ins) {
     wxCharBuffer buf(mos.GetSize());
     mos.CopyTo(buf.data(), buf.length());
 
-    PyThreadBlocker blocker;
+    pbpp::ThreadBlocker blocker;
     return PyUnicode_FromStringAndSize(buf.data(), buf.length());
 }
 
@@ -58,7 +58,7 @@ void wxSetProcessDPIAware() {
 }
 
 PyObject *CharArrayToPyString(PyObject *py_text) {
-    PyThreadBlocker blocker;
+    pbpp::ThreadBlocker blocker;
 
     char *text = "";
 
