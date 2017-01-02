@@ -95,6 +95,7 @@ class WxFlagsAssigner(Module.FlagsAssigner):
     _managed_by_wx = [
         "wxWindow",
         "wxSizer",
+        "wxXmlSubclassFactory",
         "wxMenuItem",
         "wxMenu",  # TODO:
     ]
@@ -177,7 +178,7 @@ class WxBlacklist(Module.Blacklist):
     }
 
     _namespaces = {
-        "std", "stdext",
+        "std", "stdext", "__gnu_cxx",
         "wxPrivate",
     }
 
@@ -553,13 +554,16 @@ class ProcessingDoneListener:
         pass
 
     def on_processing_done(self, module):
-        # Remove the duplicated declarations
-        headers = []
+        # Remove the duplicated header files
+
+        headers = {'#include "wx/process.h"',}  # TODO:
+
         for header in module.header_jar.headers:
             if "/msw/" not in header and "Hacks/" not in header:
-                headers.append(header)
+                headers.add(header)
 
-        module.header_jar.headers = headers
+        module.header_jar.headers = list(headers)
+
 
         classes = {
             "wxGUIEventLoop": "wx/msw/evtloop.h",
