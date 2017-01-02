@@ -68,6 +68,31 @@ class Project(ProjectBase.ProjectBase):
 
         __wx__ = Util.load("wxMSW")
 
+        self.add_converters(__wx__)
+
+        class _Interfaces:
+            def __init__(self):
+                self.self_setter = "SetSelf(%s)"
+                self.self_getter = "GetSelf()"
+
+        interfaces = _Interfaces()
+        Types.PythonAwareClassRegistry.add("wxPyEvent", interfaces)
+        Types.PythonAwareClassRegistry.add("wxPyCommandEvent", interfaces)
+
+        self.root_mod = Module.Module(
+            "wx", None,
+            __wx__.WxPythonNamer(),
+            __wx__.WxHeaderProvider(),
+            __wx__.WxFlagsAssigner(),
+            __wx__.WxBlacklist()
+        )
+
+        pdl = __wx__.ProcessingDoneListener()
+        self.root_mod.processing_done_listener = pdl
+
+    def add_converters(self, __wx__):
+        Converters.clear()
+
         Converters.add(__wx__.WxStringConv())
         Converters.add(Converters.StrConv())
         Converters.add(Converters.WcsConv())
@@ -87,37 +112,16 @@ class Project(ProjectBase.ProjectBase):
         convert_list("wxArrayDouble", ("double",))
         convert_list("wxArrayString", ("wxString",))
 
-
         K = Types.Type(("wxString",), 0, "Class")
         V = Types.Type(("wxString",), 0, "Class")
         Converters.add(__wx__.WxDictConv(K, V, "wxStringToStringHashMap"))
-
-
-        class _Interfaces:
-            def __init__(self):
-                self.self_setter = "SetSelf(%s)"
-                self.self_getter = "GetSelf()"
-
-        interfaces = _Interfaces()
-        Types.PythonAwareClassRegistry.add("wxPyEvent", interfaces)
-        Types.PythonAwareClassRegistry.add("wxPyCommandEvent", interfaces)
-
-
-        self.root_mod = Module.Module(
-            "wx", None,
-            __wx__.WxPythonNamer(),
-            __wx__.WxHeaderProvider(),
-            __wx__.WxFlagsAssigner(),
-            __wx__.WxBlacklist()
-        )
-
-        pdl = __wx__.ProcessingDoneListener()
-        self.root_mod.processing_done_listener = pdl
 
     def try_update(self):
         __wx__, reloaded = Util.load2("wxMSW")
 
         if reloaded:
+            self.add_converters(__wx__)
+
             self.root_mod.update_strategies(
                 __wx__.WxPythonNamer(),
                 __wx__.WxHeaderProvider(),
