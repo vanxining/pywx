@@ -557,10 +557,12 @@ class ProcessingDoneListener:
         # Remove the duplicated header files
 
         headers = {'#include "wx/process.h"',}  # TODO:
+        discard = set()
 
         for header in module.header_jar.headers:
             if "/msw/" not in header and "Hacks/" not in header:
-                headers.add(header)
+                if header not in discard:
+                    headers.add(header)
 
         module.header_jar.headers = list(headers)
 
@@ -602,6 +604,16 @@ class ProcessingDoneListener:
                 self.__dict__.update(kwargs)
 
         inj = (
+            Injection(cxx_name="wxPyBind",
+                      py_name="Bind",
+                      headers=("Adapters/PyBind.hxx",),
+                      classes=("wxEvtHandler",)),
+
+            Injection(cxx_name="wxPyUnbind",
+                      py_name="Unbind",
+                      headers=("Adapters/PyBind.hxx",),
+                      classes=("wxEvtHandler",)),
+
             Injection(cxx_name="TextEntryBase_GetSelection",
                       py_name="GetSelection",
                       headers=("Adapters/More.hxx",),

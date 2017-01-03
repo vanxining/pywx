@@ -91,15 +91,15 @@ class MyFrame(wx.Frame):
         self.thread_btn = wx.Button(self, wx.ID_ANY, u"创建线程(&C)", pos=wx.Point(90, 315))
         self.xrc_btn = wx.Button(self, wx.ID_ANY, u"XRC(&X)", pos=wx.Point(90, 345))
 
-        wx.PyBind(self, wx.EVT_ICONIZE, self.OnIconize)
-        wx.PyBind(self, wx.EVT_PAINT, self.OnPaint)
-        wx.PyBind(self, wx.EVT_KEY_UP, self.OnKeyUp)
+        self.Bind(wx.EVT_ICONIZE, self.OnIconize)
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
-        wx.PyBind(self.begin_btn, wx.EVT_BUTTON, self.OnBegin)
-        wx.PyBind(self.stop_btn, wx.EVT_BUTTON, self.OnStop)
-        wx.PyBind(self.thread_btn, wx.EVT_BUTTON, self.OnThread)
-        wx.PyBind(self, EVT_WORKER_FIN, self.OnThreadEnded)
-        wx.PyBind(self.xrc_btn, wx.EVT_BUTTON, self.OnXRC)
+        self.begin_btn.Bind(wx.EVT_BUTTON, self.OnBegin)
+        self.stop_btn.Bind(wx.EVT_BUTTON, self.OnStop)
+        self.thread_btn.Bind(wx.EVT_BUTTON, self.OnThread)
+        self.Bind(EVT_WORKER_FIN, self.OnThreadEnded)
+        self.xrc_btn.Bind(wx.EVT_BUTTON, self.OnXRC)
 
         for chd in self.GetChildren():
             size = chd.GetSize()
