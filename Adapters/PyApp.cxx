@@ -26,6 +26,8 @@
 #   include <wx/msw/msvcrt.h>
 #endif
 
+#include <cstdio> // for fprintf(), stderr
+
 #ifdef __WXMSW__
 
 #if PY_MAJOR_VERSION < 3
@@ -127,8 +129,6 @@ void wxPyApp::SetStartupComplete(bool complete) {
     m_startupCompleted = complete;
 }
 
-#define __SCOPE__()
-
 void wxPyApp::_BootstrapApp() {
     static bool haveInitialized = false;
     bool        result;
@@ -140,7 +140,7 @@ void wxPyApp::_BootstrapApp() {
 
         int argc = 0;
 
-        __SCOPE__() {
+        {
             PBPP_NEW_THREAD_BLOCKER
 
             PyObject *sysargv = PySys_GetObject("argv");
@@ -210,7 +210,7 @@ __ERR:
 int wxPyApp::MainLoop() {
     int retval = 0;
 
-    __SCOPE__() {
+    {
 #ifdef __WXOSX__
         wxMacAutoreleasePool autoreleasePool;
 #endif
@@ -226,7 +226,7 @@ int wxPyApp::MainLoop() {
         retval = wxApp::MainLoop();
         OnExit();
     } else {
-        printf("[wxPyApp::MainLoop] Why? No top level windows...\n");
+        fprintf(stderr, "[wxPyApp::MainLoop] Why? No top level windows...\n");
     }
 
     return retval;

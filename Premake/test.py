@@ -8,28 +8,28 @@ import wx
 
 
 def NewEvent():
-    evttype = wx.PyNewEventType(False)
+    event_type = wx.PyNewEventType(False)
 
     class _Event(wx.PyEvent):
-        def __init__(self, **kw):
+        def __init__(self, **kwargs):
             wx.PyEvent.__init__(self)
-            self.SetEventType(evttype.GetEventType())
-            self.__dict__.update(kw)
+            self.SetEventType(event_type.GetEventType())
+            self.__dict__.update(kwargs)
 
-    return _Event, evttype
+    return _Event, event_type
 
 
 
 def NewCommandEvent():
-    evttype = wx.PyNewEventType(True)
+    event_type = wx.PyNewEventType(True)
 
     class _Event(wx.PyCommandEvent):
         # noinspection PyShadowingBuiltins
-        def __init__(self, id, **kw):
-            wx.PyCommandEvent.__init__(self, evttype, id)
-            self.__dict__.update(kw)
+        def __init__(self, id, **kwargs):
+            wx.PyCommandEvent.__init__(self, event_type, id)
+            self.__dict__.update(kwargs)
 
-    return _Event, evttype
+    return _Event, event_type
 
 
 class App(wx.PyApp):
@@ -38,13 +38,20 @@ class App(wx.PyApp):
         self._BootstrapApp()
 
     def OnInit(self):
-        win = MyFrame()
-        win.Show()
+        try:
+            win = MyFrame()
+            win.Show()
 
-        for handler in wx.Image.GetHandlers():
-            print(handler.GetClassInfo().GetClassName())
+            for handler in wx.Image.GetHandlers():
+                print(handler.GetClassInfo().GetClassName())
 
-        return True
+            return True
+        except:
+            from traceback import print_exc
+            print_exc()
+
+            return False
+
 
 
 (WorkerFinishEvent, EVT_WORKER_FIN) = NewEvent()
@@ -62,9 +69,9 @@ class Worker:
         print("Worker.Run()")
         time.sleep(0.5)
 
-        evt = WorkerFinishEvent()
-        evt.hello = "Hello, world!"
-        wx.PostEvent(self.evt_handler, evt)
+        event = WorkerFinishEvent()
+        event.hello = "Hello, world!"
+        wx.PostEvent(self.evt_handler, event)
 
 
 # noinspection PyMethodMayBeStatic
