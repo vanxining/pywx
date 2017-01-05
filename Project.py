@@ -15,11 +15,11 @@ _sep = os.path.sep
 output_cxx_dir = os.path.dirname(__file__) + _sep + "Gen"
 output_cxx_ext = ".cxx"
 
-header_wrappers_dir = os.path.dirname(__file__) + _sep + "Hacks" + _sep
+header_wrappers_dir = "{0}{1}Hacks{1}".format(os.path.dirname(__file__), _sep)
 header_wrappers_ext = ".pbpp.hxx"
 
 castxml_bin = r'castxml'
-_castxml_args = r'--castxml-output=1 -w -x c++ -std=c++14 -fms-compatibility-version=19 -I"D:\Work\CppLibs\wxMSW\include" -I"D:\Work\CppLibs\wxMSW\lib\vc_lib\mswu" -D__CASTXML__ -DWXDLLIMPEXP_CORE'
+_castxml_args = r'--castxml-output=1 -w -x c++ -std=c++14 -D__CASTXML__ -fms-compatibility-version=19 -I"D:\Work\CppLibs\wxMSW\include" -I"D:\Work\CppLibs\wxMSW\lib\vc_lib\mswu" -DWXDLLIMPEXP_CORE'
 
 
 def castxml_args(header_path):
@@ -30,6 +30,7 @@ def select_headers(header_path, xml_path):
     short_name = os.path.split(header_path)[1]
     pattern = re.compile(r"\W" + short_name.replace('.', r"\."))
 
+    # The first `File` tag is always the entry header generating the XML file
     with open(xml_path, "r+") as f:
         content = f.read()
         pos = content.index("<File ")
@@ -43,6 +44,8 @@ def select_headers(header_path, xml_path):
 
     headers = []
 
+    # Select other platform-specific headers with the same base name
+    # (along with the entry header)
     beg = pos
     while True:
         beg = content.find('name="', beg)

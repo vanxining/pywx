@@ -66,10 +66,10 @@ class WxHeaderProvider(Module.HeaderProvider):
         if cls.startswith("wxApp") or cls == "wxPyApp":
             return "wx/vidmode.h",
         else:
-            return []
+            return ()
 
     def module(self, name):
-        return []
+        return ()
 
     def normalize(self, full_path):
         full_path = full_path.replace(os.path.sep, '/')
@@ -112,7 +112,12 @@ class WxFlagsAssigner(Module.FlagsAssigner):
 
 class WxBlacklist(Module.Blacklist):
 
-    _class_patterns = [
+    _namespaces = {
+        "std", "stdext", "__gnu_cxx",
+        "wxPrivate",
+    }
+
+    _class_patterns = (
         re.compile(r"wxEventTypeTag"),
         re.compile(r"(\w+::)*(const_)?(i|I)terator"),
         re.compile(r"\w*_class_type_info_pseudo\w*"),
@@ -128,7 +133,7 @@ class WxBlacklist(Module.Blacklist):
         # TODO:
         re.compile(r"wxWeakRef.*"),
         re.compile(r"wxVector.*"),
-    ]
+    )
 
     _classes = {
         "PyObject",
@@ -163,35 +168,30 @@ class WxBlacklist(Module.Blacklist):
         "wxXmlResourceHandlerImpl",
     }
 
-    _class_exceptions = [
+    _class_exceptions = {
         "wxImageList",
         "wxGDIObjListBase",
         "wxBrushList",
         "wxPenList",
         "wxFontList",
-    ]
+    }
 
-    _base_patterns = []
+    _base_patterns = ()
     _bases = {
         "std::basic_streambuf<char, std::char_traits<char> >",
         "_PySelf",
     }
 
-    _namespaces = {
-        "std", "stdext", "__gnu_cxx",
-        "wxPrivate",
-    }
-
-    _common_method_patterns = [
+    _common_method_patterns = (
         re.compile(r".+\WWXH[A-Z]+\W.*"),
         re.compile(r".+\WWXMSG\W.*"),
 
         re.compile(r".+\W(const )?wxString \*\W"),  # TODO: wxString *
         re.compile(r".+[^\w\s]\s*wxString &\W"),  # TODO: wxString &
-    ]
+    )
 
     # match at start
-    _method_patters = [
+    _method_patters = (
         re.compile(r"\W(begin|end)\W.+"),
 
         re.compile(r"[\w+:]*wxCreateObject\(\)"),
@@ -206,7 +206,7 @@ class WxBlacklist(Module.Blacklist):
         re.compile(r".+Event(Hash)?Table.+"),
         re.compile(r"wxEvtHandler::(C|Disc)onnect.+"),
         re.compile(r".+wxCmdLineParser.+"),
-    ] + _common_method_patterns
+    ) + _common_method_patterns
 
     _methods = {
         "wxClassInfo::begin_classinfo()",
@@ -314,11 +314,11 @@ class WxBlacklist(Module.Blacklist):
         "wxBusyCursor::GetBusyCursor()",
     }
 
-    _free_functions_patterns = [
+    _free_functions_patterns = (
         re.compile(r".+wxUnusedVar.+"),
         re.compile(r".+wxSwap.+"),
         re.compile(r".+Event\w*Functor.+"),
-    ] + _common_method_patterns
+    ) + _common_method_patterns
 
     _free_functions = {
         "wxCreateApp()",
@@ -336,15 +336,15 @@ class WxBlacklist(Module.Blacklist):
         "wxGetDiskSpace(const wxString &, wxDiskspaceSize_t *, wxDiskspaceSize_t *)",
     }
 
-    _return_type_patterns = [
+    _return_type_patterns = (
         re.compile(r"wx(\w)*Sizer [*&]?"),  # TODO: Why?
-    ]
+    )
 
-    _return_types = []
+    _return_types = ()
 
-    _global_constants_patterns = [
+    _global_constants_patterns = (
         re.compile(r"wxEventTypeTag\W"),
-    ]
+    )
 
     _global_constants = {
         "wxTheAppInitializer",  # a free function
@@ -360,7 +360,7 @@ class WxBlacklist(Module.Blacklist):
         "wxNativeFontInfo::lf",
     }
 
-    _simple_dummy_classes = [
+    _simple_dummy_classes = (
         "HWND__",
         "HMENU__",
 
@@ -396,7 +396,7 @@ class WxBlacklist(Module.Blacklist):
         "wxXmlNode",
         "wxFileName",
         "wxPanel",
-    ]
+    )
 
     def __init__(self):
         Module.Blacklist.__init__(self)
@@ -407,9 +407,8 @@ class WxBlacklist(Module.Blacklist):
         for cls in ("HWND__", "HMENU__",):
             self.dummy_classes[cls].is_struct = True
 
-    def _simple_add_dummy_class(self, cls):
-        ddef = Class.Class.DummyDef(name=cls, full_name=cls)
-        self.dummy_classes[cls] = ddef
+    def namespace(self, ns):
+        return ns in self._namespaces
 
     def klass(self, cls):
         if cls in self._class_exceptions:
@@ -427,9 +426,6 @@ class WxBlacklist(Module.Blacklist):
                 return True
 
         return full_name in self._bases
-
-    def namespace(self, ns):
-        return ns in self._namespaces
 
     def method(self, mname):
         for pattern in self._method_patters:
