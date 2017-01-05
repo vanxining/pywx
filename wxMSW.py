@@ -360,8 +360,6 @@ class WxBlacklist(Module.Blacklist):
         "wxNativeFontInfo::lf",
     }
 
-    dummy_classes = {}
-
     _simple_dummy_classes = [
         "HWND__",
         "HMENU__",
@@ -404,9 +402,8 @@ class WxBlacklist(Module.Blacklist):
         Module.Blacklist.__init__(self)
 
         for cls in self._simple_dummy_classes:
-            self._simple_add_dummy_class(cls)
+            self.add_simple_dummy_class(cls)
 
-        # TODO:
         for cls in ("HWND__", "HMENU__",):
             self.dummy_classes[cls].is_struct = True
 
@@ -423,9 +420,6 @@ class WxBlacklist(Module.Blacklist):
                 return True
 
         return cls in self._classes
-
-    def dummy_klass(self, cls):
-        return cls in self.dummy_classes
 
     def base(self, full_name):
         for pattern in self._base_patterns:
