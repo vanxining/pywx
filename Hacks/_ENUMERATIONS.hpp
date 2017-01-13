@@ -346,6 +346,21 @@ enum {
     wxSEND_EVENT_POST = 1
 };
 
+// _withimages.i
+enum {
+};
+
+// _xmlres.i
+enum {
+};
+
+// _xmlres.i
+enum wxXmlResourceFlags {
+    wxXRC_USE_LOCALE,
+    wxXRC_NO_SUBCLASSING,
+    wxXRC_NO_RELOADING
+};
+
 // _app.i
 enum {
     // wxPYAPP_ASSERT_SUPPRESS  = 1,
@@ -379,6 +394,24 @@ enum {
 // _bitmap.i
 enum {
     wxBITMAP_SCREEN_DEPTH
+};
+
+// _bookctrl.i
+enum {
+    wxBK_DEFAULT,
+    wxBK_TOP,
+    wxBK_BOTTOM,
+    wxBK_LEFT,
+    wxBK_RIGHT,
+    wxBK_ALIGN_MASK,
+    // wxBK_BUTTONBAR,   // deprecated
+    // wxTBK_BUTTONBAR,
+    // wxTBK_HORZ_LAYOUT,
+    wxBK_HITTEST_NOWHERE = 1,   // not on tab
+    wxBK_HITTEST_ONICON  = 2,   // on icon
+    wxBK_HITTEST_ONLABEL = 4,   // on label
+    wxBK_HITTEST_ONITEM  = wxBK_HITTEST_ONICON | wxBK_HITTEST_ONLABEL,
+    wxBK_HITTEST_ONPAGE  = 8,   // not on tab control, but over the selected page
 };
 
 // _brush.i
@@ -612,14 +645,14 @@ enum {
     wxBACKINGSTORE,
     wxCOLOURED,
     wxFIXED_LENGTH,
-    wxLB_NEEDED_SB,
-    wxLB_ALWAYS_SB,
-    wxLB_SORT,
-    wxLB_SINGLE,
-    wxLB_MULTIPLE,
-    wxLB_EXTENDED,
-    wxLB_OWNERDRAW,
-    wxLB_HSCROLL,
+    // wxLB_NEEDED_SB,
+    // wxLB_ALWAYS_SB,
+    // wxLB_SORT,
+    // wxLB_SINGLE,
+    // wxLB_MULTIPLE,
+    // wxLB_EXTENDED,
+    // wxLB_OWNERDRAW,
+    // wxLB_HSCROLL,
     wxCB_SIMPLE,
     wxCB_DROPDOWN,
     wxCB_SORT,
@@ -1569,6 +1602,42 @@ enum wxMouseButton {
     wxMOUSE_BTN_AUX1,
     wxMOUSE_BTN_AUX2,
     wxMOUSE_BTN_MAX
+};
+
+// _notebook.i
+enum {
+    // wxNB_FIXEDWIDTH,
+    // wxNB_TOP,
+    // wxNB_LEFT,
+    // wxNB_RIGHT,
+    // wxNB_BOTTOM,
+    // wxNB_MULTILINE,
+    // wxNB_NOPAGETHEME,
+    // wxNB_HITTEST_NOWHERE,
+    // wxNB_HITTEST_ONICON,
+    // wxNB_HITTEST_ONLABEL,
+    // wxNB_HITTEST_ONITEM,
+    // wxNB_HITTEST_ONPAGE,
+};
+
+// _notebook.i
+enum {
+    // wxLB_DEFAULT = 0,
+    // wxLB_TOP    = 0x1,
+    // wxLB_BOTTOM = 0x2,
+    // wxLB_LEFT   = 0x4,
+    // wxLB_RIGHT  = 0x8,
+    // wxLB_ALIGN_MASK = 0xf,
+};
+
+// _notebook.i
+enum {
+    // wxCHB_DEFAULT,
+    // wxCHB_TOP,
+    // wxCHB_BOTTOM,
+    // wxCHB_LEFT,
+    // wxCHB_RIGHT,
+    // wxCHB_ALIGN_MASK
 };
 
 // _pen.i

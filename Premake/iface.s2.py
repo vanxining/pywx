@@ -18,7 +18,7 @@ content = sys.stdin.read()
 content = re.sub(r"\/\*.+?\*\/", "", content)
 
 
-enums = [
+enums = (
     "enum wxAntialiasMode",
     "enum wxBitmapBufferFormat",
     "enum wxSoundFlags",
@@ -26,7 +26,7 @@ enums = [
     "enum wxCompositionMode",
     "enum wxFindReplaceDialogStyles",
     "enum wxFindReplaceFlags",
-]
+)
 
 for enum in enums:
     beg = 0
@@ -34,15 +34,15 @@ for enum in enums:
         content, beg = comment_out_enum(enum, content, beg)
 
 
-enums = [
+enums = (
     "enum wxTaskBarIconType",
-]
+)
 
 for enum in enums:
     content, beg = comment_out_enum(enum, content, 0)
 
 
-common_repl = [
+common_repl = (
     "enum { wxEXTEND_LAST_ON_EACH_LINE };",
     " = INT_MAX",
     "enum wxFontStyle;",
@@ -59,8 +59,14 @@ common_repl = [
     "wxCURSOR_COPY_ARROW",
     "wxQUANTIZE_",
     "wxPD_",
-    "wxTR_EXTENDED", # TODO: new wxPython version?
-]
+    "wxTR_EXTENDED",  # TODO: new wxPython version?
+
+    "wxBK_BUTTONBAR",
+    "wxNB_",  # wxNotebook: let pbpp discover them
+    "wxCHB_",  # TODO: wxChoicebook
+    "wxLB_",  # TODO: wxListbook
+    "wxTBK_",  # TODO: wxToolbook
+)
 
 for p in common_repl:
     content = content.replace(p, "// " + p)

@@ -12,6 +12,7 @@
 
 #include "wx/listctrl.h"
 #include "wx/treectrl.h"
+#include "wx/notebook.h"
 #include "wx/process.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -322,6 +323,13 @@ public:
         DoCall(py_event);
     }
 
+    void operator()(wxBookCtrlEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__BookCtrlEvent(const wxBookCtrlEvent &);
+        PyObject *py_event = Borrow__BookCtrlEvent(e);
+        DoCall(py_event);
+    }
+
     void operator()(wxNcPaintEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
         PyObject *Borrow__NcPaintEvent(const wxNcPaintEvent &);
@@ -567,6 +575,8 @@ bool DoPyBind
         PYEVENT(wxEVT_TREE_ITEM_MENU)
         PYEVENT(wxEVT_END_PROCESS)
         PYEVENT(wxEVT_TIMER)
+        PYEVENT(wxEVT_NOTEBOOK_PAGE_CHANGED)
+        PYEVENT(wxEVT_NOTEBOOK_PAGE_CHANGING)
 
     END_PYEVENT_MAP()
 }

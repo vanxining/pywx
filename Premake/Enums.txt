@@ -32,10 +32,10 @@ Z:\wxPython\src\_treectrl.i
 // Z:\wxPython\src\_versioninfo.i
 // Z:\wxPython\src\_vscroll.i
 Z:\wxPython\src\_window.i
-// Z:\wxPython\src\_withimages.i
+Z:\wxPython\src\_withimages.i
 // Z:\wxPython\src\_xml.i
 // Z:\wxPython\src\_xmlhandler.i
-// Z:\wxPython\src\_xmlres.i
+Z:\wxPython\src\_xmlres.i
 // Z:\wxPython\src\_xmlsub.i
 // Z:\wxPython\src\_about.i
 // Z:\wxPython\src\_accel.i
@@ -44,7 +44,7 @@ Z:\wxPython\src\_app.i
 // Z:\wxPython\src\_aui_docstrings.i
 // Z:\wxPython\src\_axbase.i
 Z:\wxPython\src\_bitmap.i
-// Z:\wxPython\src\_bookctrl.i
+Z:\wxPython\src\_bookctrl.i
 Z:\wxPython\src\_brush.i
 Z:\wxPython\src\_button.i
 Z:\wxPython\src\_checkbox.i
@@ -100,7 +100,7 @@ Z:\wxPython\src\_menu.i
 // Z:\wxPython\src\_mimetype.i
 // Z:\wxPython\src\_misc.i
 Z:\wxPython\src\_mousestate.i
-// Z:\wxPython\src\_notebook.i
+Z:\wxPython\src\_notebook.i
 Z:\wxPython\src\_obj.i
 // Z:\wxPython\src\_overlay.i
 // Z:\wxPython\src\_palette.i

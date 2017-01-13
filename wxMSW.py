@@ -362,6 +362,7 @@ class WxBlacklist(Module.Blacklist):
 
     _simple_dummy_classes = (
         "HWND__",
+        "HBRUSH__",
         "HMENU__",
 
         "wxToolTip",
@@ -404,8 +405,8 @@ class WxBlacklist(Module.Blacklist):
         for cls in self._simple_dummy_classes:
             self.add_simple_dummy_class(cls)
 
-        for cls in ("HWND__", "HMENU__",):
-            self.dummy_classes[cls].is_struct = True
+            if cls[0] == 'H' and cls.endswith("__"):
+                self.dummy_classes[cls].is_struct = True
 
     def namespace(self, ns):
         return ns in self._namespaces
@@ -561,6 +562,7 @@ class ProcessingDoneListener:
             "wxGUIEventLoop": "wx/msw/evtloop.h",
             "wxListCtrl": "wx/msw/listctrl.h",
             "wxTreeCtrl": "wx/msw/treectrl.h",
+            "wxNotebook": "wx/msw/notebook.h",
         }
 
         for name in classes:

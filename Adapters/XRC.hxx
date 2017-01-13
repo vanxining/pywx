@@ -19,6 +19,7 @@ class wxWindow;
     XRC_CONV(wxCheckListBox) \
     XRC_CONV(wxListCtrl) \
     XRC_CONV(wxListView) \
+    XRC_CONV(wxNotebook) \
 
 #define XRC_CONV(T) class T;
 CONTROL_LIST

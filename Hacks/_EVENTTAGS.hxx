@@ -166,5 +166,7 @@ extern int wxEVT_TREE_ITEM_GETTOOLTIP;
 extern int wxEVT_TREE_ITEM_MENU;
 extern int wxEVT_END_PROCESS;
 extern int wxEVT_TIMER;
+extern int wxEVT_NOTEBOOK_PAGE_CHANGED;
+extern int wxEVT_NOTEBOOK_PAGE_CHANGING;
 
 #endif
