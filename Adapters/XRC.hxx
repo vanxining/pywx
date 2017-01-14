@@ -11,6 +11,7 @@ class wxWindow;
 #define CONTROL_LIST \
     XRC_CONV(wxFrame) \
     XRC_CONV(wxDialog) \
+    XRC_CONV(wxPanel) \
     XRC_CONV(wxMenuBar) \
     XRC_CONV(wxStatusBar) \
     XRC_CONV(wxButton) \

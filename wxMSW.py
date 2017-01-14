@@ -396,7 +396,6 @@ class WxBlacklist(Module.Blacklist):
         "wxXmlDocument",
         "wxXmlNode",
         "wxFileName",
-        "wxPanel",
     )
 
     def __init__(self):
