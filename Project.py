@@ -1,7 +1,6 @@
 import os
 import sys
 import StringIO
-import re
 
 import ProjectBase
 import Converters
@@ -26,11 +25,12 @@ def castxml_args(header_path):
     return _castxml_args
 
 
-def select_headers(header_path, xml_path):
-    short_name = os.path.split(header_path)[1]
-    pattern = re.compile(r"\W" + short_name.replace('.', r"\."))
+_subheaders = {}
 
-    # The first `File` tag is always the entry header generating the XML file
+
+def select_headers(header_path, xml_path):
+    # Restore the temporary wrapper header to the original entry header
+    # The first <File> tag is always the entry header generating the XML file
     with open(xml_path, "r+") as f:
         content = f.read()
         pos = content.index("<File ")
@@ -41,6 +41,10 @@ def select_headers(header_path, xml_path):
 
             f.seek(0)
             f.write(content)
+
+    short_name = os.path.split(header_path)[1]
+    subheaders = _subheaders[short_name] if short_name in _subheaders else []
+    subheaders.append(short_name)
 
     headers = []
 
@@ -54,12 +58,13 @@ def select_headers(header_path, xml_path):
 
         beg += 6
         end = content.index('"', beg)
-        path = content[beg:end]
-
-        if pattern.search(path):
-            headers.append(path)
-
+        full_path = content[beg:end]
         beg = end
+
+        for header in subheaders:
+            pos = full_path.find(header)
+            if pos != -1 and not full_path[pos - 1].isalnum():
+                headers.append(full_path)
 
     assert len(headers) > 0
     return headers
