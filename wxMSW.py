@@ -551,7 +551,13 @@ class ProcessingDoneListener:
         pass
 
     def on_processing_done(self, module):
-        # Remove the duplicated header files
+        self._handle_headers(module)
+        self._handle_global_constants(module)
+        self._handle_argument_default_values(module)
+        self._inject_methods(module)
+
+    def _handle_headers(self, module):
+        # Module level
 
         headers = set()
         discard = set()
@@ -563,6 +569,7 @@ class ProcessingDoneListener:
 
         module.header_jar.headers = list(headers)
 
+        # Class level
 
         classes = {
             "wxGUIEventLoop": "wx/msw/evtloop.h",
@@ -578,20 +585,20 @@ class ProcessingDoneListener:
                 cls.header_jar.remove_header('#include "%s"' % classes[name])
                 cls.header_jar.add_headers((classes[name].replace("/msw", ""),))
 
-
         for name in ("wxMSWEventLoopBase", "wxConsoleEventLoop",):
             cls = Registry.get_class(name)
             if cls:
                 cls.header_jar.remove_header('#include "wx/msw/evtloopconsole.h"')
                 cls.header_jar.add_headers(("wx/evtloop.h",))
 
-
+    def _handle_global_constants(self, module):
         import Types, Argument
+
         dummy_type = Types.Type(("wxClipboard", "*",), 999, "Class")
         wxTheClipboard = Argument.Argument(dummy_type, "wxTheClipboard")
         module.global_constants["wxTheClipboard"] = wxTheClipboard
 
-
+    def _handle_argument_default_values(self, module):
         wxWindowBase = Registry.get_class("wxWindowBase")
         if wxWindowBase:
             for mname in ("NavigateIn", "Navigate",):
@@ -601,7 +608,7 @@ class ProcessingDoneListener:
                 arg = overloads[0].args.args[0]
                 arg.defv = "wxNavigationKeyEvent::IsForward"
 
-
+    def _inject_methods(self, module):
         # TODO: Add support for reparsing one single file
 
         class Injection(object):
