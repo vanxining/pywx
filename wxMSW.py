@@ -241,7 +241,6 @@ class WxBlacklist(Module.Blacklist):
         "wxApp::InitRichEdit(int)",  # TODO: wxMSW only?
         "wxPyApp::SetStartupComplete(bool)",
 
-        "wxCheckBoxBase::WXValidateStyle(long *)",
         "wxTreeCtrl::GetItemParam(const wxTreeItemId &) const",
 
         # TODO: incomplete support for function ptr (call convention)
@@ -377,7 +376,6 @@ class WxBlacklist(Module.Blacklist):
         "wxAcceleratorEntry",
 
         "wxAppTraits",
-        "wxValidator",
         "wxIconBundle",
         "wxTextCompleter",
         "wxScrolledWindow",
