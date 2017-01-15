@@ -14,6 +14,7 @@
 #include "wx/treectrl.h"
 #include "wx/notebook.h"
 #include "wx/process.h"
+#include "wx/clipbrd.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -236,6 +237,13 @@ public:
         PBPP_NEW_THREAD_BLOCKER
         PyObject *Borrow__IdleEvent(const wxIdleEvent &);
         PyObject *py_event = Borrow__IdleEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxClipboardEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ClipboardEvent(const wxClipboardEvent &);
+        PyObject *py_event = Borrow__ClipboardEvent(e);
         DoCall(py_event);
     }
 
@@ -577,6 +585,7 @@ bool DoPyBind
         PYEVENT(wxEVT_TIMER)
         PYEVENT(wxEVT_NOTEBOOK_PAGE_CHANGED)
         PYEVENT(wxEVT_NOTEBOOK_PAGE_CHANGING)
+        PYEVENT(wxEVT_CLIPBOARD_CHANGED)
 
     END_PYEVENT_MAP()
 }

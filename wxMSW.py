@@ -69,6 +69,10 @@ class WxHeaderProvider(Module.HeaderProvider):
             return ()
 
     def module(self, name):
+        if name == "wx":
+            return ("wx/process.h",
+                    "wx/clipbrd.h",)
+
         return ()
 
     def normalize(self, full_path):
@@ -98,6 +102,7 @@ class WxFlagsAssigner(Module.FlagsAssigner):
         "wxXmlSubclassFactory",
         "wxMenuItem",
         "wxMenu",  # TODO:
+        "wxDataObject",
     ]
 
     def assign(self, cls_name):
@@ -302,6 +307,10 @@ class WxBlacklist(Module.Blacklist):
         # TODO:
         "wxDialogBase::CreateTextSizer(const wxString &, wxTextSizerWrapper &)",
         "wxMessageDialogBase::ButtonLabel::ButtonLabel(const wxCStrData &)",
+        "wxDataFormat::wxDataFormat(const wxCStrData &)",
+
+        # OLE
+        "wxDataObject::GetInterface() const",
 
         # seem not implemented
         "wxListBox::Free()",
@@ -544,7 +553,7 @@ class ProcessingDoneListener:
     def on_processing_done(self, module):
         # Remove the duplicated header files
 
-        headers = {'#include "wx/process.h"',}  # TODO:
+        headers = set()
         discard = set()
 
         for header in module.header_jar.headers:
@@ -560,6 +569,7 @@ class ProcessingDoneListener:
             "wxListCtrl": "wx/msw/listctrl.h",
             "wxTreeCtrl": "wx/msw/treectrl.h",
             "wxNotebook": "wx/msw/notebook.h",
+            "wxClipboard": "wx/msw/clipbrd.h",
         }
 
         for name in classes:
@@ -574,6 +584,12 @@ class ProcessingDoneListener:
             if cls:
                 cls.header_jar.remove_header('#include "wx/msw/evtloopconsole.h"')
                 cls.header_jar.add_headers(("wx/evtloop.h",))
+
+
+        import Types, Argument
+        dummy_type = Types.Type(("wxClipboard", "*",), 999, "Class")
+        wxTheClipboard = Argument.Argument(dummy_type, "wxTheClipboard")
+        module.global_constants["wxTheClipboard"] = wxTheClipboard
 
 
         wxWindowBase = Registry.get_class("wxWindowBase")

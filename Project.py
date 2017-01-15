@@ -25,7 +25,9 @@ def castxml_args(header_path):
     return _castxml_args
 
 
-_subheaders = {}
+_subheaders = {
+    "dataobj.h": ["dataform.h", "dataobj2.h",],
+}
 
 
 def select_headers(header_path, xml_path):
