@@ -7,7 +7,6 @@
 #endif
 
 #include <wx/wxprec.h>
-#include <initializer_list>
 
 #pragma warning(disable: 4005) // 宏标识符定义了两次
 #pragma warning(disable: 4273) // 文件中的两个定义在 DllImport 的使用上不同
