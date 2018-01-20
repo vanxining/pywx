@@ -1,8 +1,10 @@
+#! python2.7-32
 # -*- coding: utf-8 -*-
 
-import thread
 import sys
+import thread
 import time
+import traceback
 
 import wx
 
@@ -37,7 +39,9 @@ class App(wx.PyApp):
         wx.PyApp.__init__(self)
         self._BootstrapApp()
 
+    # noinspection PyMethodMayBeStatic
     def OnInit(self):
+        # noinspection PyBroadException
         try:
             win = MyFrame()
             win.Show()
@@ -47,8 +51,7 @@ class App(wx.PyApp):
 
             return True
         except:
-            from traceback import print_exc
-            print_exc()
+            traceback.print_exc()
 
             return False
 
@@ -74,10 +77,20 @@ class Worker:
         wx.PostEvent(self.evt_handler, event)
 
 
+DPI_SCALE_FACTOR = 2.0
+
+
+def S(dimension):
+    return int(dimension * DPI_SCALE_FACTOR)
+
+
 # noinspection PyMethodMayBeStatic
 class MyFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, u"开始", size=wx.DefaultSize)
+
+        global DPI_SCALE_FACTOR
+        DPI_SCALE_FACTOR = self.GetContentScaleFactor()
 
         self.SetFont(wx.Font(9, 70, 90, 90, False, u"Segoe UI"))
 
@@ -90,13 +103,13 @@ class MyFrame(wx.Frame):
         self.SetIcon(wx.Icon(u"res/drawable/Icon.ico", wx.BITMAP_TYPE_ICO))
         self.bmp = wx.Bitmap(u"res/drawable/tag.bmp", wx.BITMAP_TYPE_BMP)
 
-        self.inurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(90, 190), size=wx.Size(290, -1))
-        self.outurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(90, 220), size=wx.Size(290, -1))
+        self.inurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(S(90), S(190)), size=wx.Size(S(290), -1))
+        self.outurl = wx.TextCtrl(self, wx.ID_ANY, pos=wx.Point(S(90), S(220)), size=wx.Size(S(290), -1))
 
-        self.begin_btn = wx.Button(self, wx.ID_ANY, u"开始转换(&B)", pos=wx.Point(90, 255))
-        self.stop_btn = wx.Button(self, wx.ID_ANY, u"关闭窗口(&S)", pos=wx.Point(90, 285))
-        self.thread_btn = wx.Button(self, wx.ID_ANY, u"创建线程(&C)", pos=wx.Point(90, 315))
-        self.xrc_btn = wx.Button(self, wx.ID_ANY, u"XRC(&X)", pos=wx.Point(90, 345))
+        self.begin_btn = wx.Button(self, wx.ID_ANY, u"开始转换(&B)", pos=wx.Point(S(90), S(255)))
+        self.stop_btn = wx.Button(self, wx.ID_ANY, u"关闭窗口(&S)", pos=wx.Point(S(90), S(285)))
+        self.thread_btn = wx.Button(self, wx.ID_ANY, u"创建线程(&C)", pos=wx.Point(S(90), S(315)))
+        self.xrc_btn = wx.Button(self, wx.ID_ANY, u"XRC(&X)", pos=wx.Point(S(90), S(345)))
 
         self.Bind(wx.EVT_ICONIZE, self.OnIconize)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -133,12 +146,12 @@ class MyFrame(wx.Frame):
 
         dc.SetFont(font)
         dc.SetTextForeground(wx.WHITE)
-        dc.DrawText(u"你好!", 50, 50)
+        dc.DrawText(u"你好!", S(50), S(50))
 
-        dc.DrawBitmap(self.bmp, 50, 90)
+        dc.DrawBitmap(self.bmp, S(50), S(90))
 
         mdc = wx.MemoryDC(self.bmp)
-        dc.Blit(50, 140, self.bmp.GetWidth(), self.bmp.GetHeight(), mdc, 0, 0)
+        dc.Blit(S(50), S(140), self.bmp.GetWidth(), self.bmp.GetHeight(), mdc, 0, 0)
 
         extents = []
         if dc.GetPartialTextExtents(u"Hello", extents):
@@ -149,6 +162,8 @@ class MyFrame(wx.Frame):
 
     def OnBegin(self, event):
         print("OnBegin()")
+
+        wx.MessageBox(u"成功转换！", u"pywx")
 
     def OnStop(self, event):
         self.Close()
@@ -173,5 +188,7 @@ class MyFrame(wx.Frame):
 
 
 if __name__ == "__main__":
+    wx.SetProcessDPIAware()
+
     app = App()
     app.MainLoop()
