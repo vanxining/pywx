@@ -1,4 +1,4 @@
-# -*- coding: gb2312 -*- 
+# -*- coding: gb2312 -*-
 
 import sys
 import re
@@ -59,7 +59,7 @@ public:
         PBPP_NEW_THREAD_BLOCKER
         Py_INCREF(m_callable);
     }
-    
+
     ~Functor() {
         if (m_callable) {
             PBPP_NEW_THREAD_BLOCKER
@@ -72,7 +72,7 @@ public:
     bool operator==(const Functor &other) const = delete;
 
 private:
-    
+
     void DoCall(PyObject *py_event) {
         PyObject *res = PyObject_CallFunctionObjArgs(m_callable, py_event, NULL);
         if (!res) {
@@ -107,7 +107,7 @@ tail = '''};
 //////////////////////////////////////////////////////////////////////////
 
 bool DoPyBind
-(wxEvtHandler *p, wxEventType event, PyObject *callable, int id, int lastId, 
+(wxEvtHandler *p, wxEventType event, PyObject *callable, int id, int lastId,
  wxObject *userData, bool unbind) {
     PBPP_NEW_THREAD_BLOCKER
 
@@ -123,14 +123,14 @@ tail_more = '''
 }
 
 bool DoPyBind
-(wxEvtHandler *p, const wxPyEventType &event, PyObject *callable, 
+(wxEvtHandler *p, const wxPyEventType &event, PyObject *callable,
  int id, int lastId, wxObject *userData, bool unbind) {
     PBPP_NEW_THREAD_BLOCKER
 
     static Functor s_functor;
     s_functor.m_callable = callable;
     bool ret = true;
-    
+
     if (event.IsCommandEvent()) {
         wxEventTypeTag<wxPyCommandEvent> tag(event.GetEventType());
         if (unbind) {
@@ -201,8 +201,8 @@ wxPyEventType wxPyNewEventType(bool isCommandEvent) {
 tags = []
 cpp_event_classes = set()
 
-# 注意模式中的前导空格
-for r in re.finditer(r"  wxDECLARE_EXPORTED_EVENT.+(wxEVT_\w+), (wx\w+)", open("E.txt").read()):
+# 注意注释后的空格
+for r in re.finditer(r"(?<!// )wxDECLARE_EXPORTED_EVENT.+(wxEVT_\w+), (wx\w+)", open("E.txt").read()):
     tags.append(r.group(1))
     cpp_event_classes.add(r.group(2))
 

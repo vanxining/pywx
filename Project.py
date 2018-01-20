@@ -26,6 +26,7 @@ def castxml_args(header_path):
 
 
 _subheaders = {
+    "listctrl.h": ["listbase.h", "itemattr.h",],
     "dataobj.h": ["dataform.h", "dataobj2.h",],
 }
 

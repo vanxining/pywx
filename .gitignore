@@ -1,7 +1,7 @@
-
 *.pyc
 *.pyd
 
+.idea
 *.sln
 *.vcxproj*
 *.db

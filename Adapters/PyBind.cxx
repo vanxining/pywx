@@ -53,7 +53,7 @@ public:
         PBPP_NEW_THREAD_BLOCKER
         Py_INCREF(m_callable);
     }
-    
+
     ~Functor() {
         if (m_callable) {
             PBPP_NEW_THREAD_BLOCKER
@@ -66,7 +66,7 @@ public:
     bool operator==(const Functor &other) const = delete;
 
 private:
-    
+
     void DoCall(PyObject *py_event) {
         PyObject *res = PyObject_CallFunctionObjArgs(m_callable, py_event, NULL);
         if (!res) {
@@ -86,108 +86,80 @@ public:
         DoCall(e.GetSelf());
     }
 
-    void operator()(wxKeyEvent &e) {
+    void operator()(wxPressAndTapEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__KeyEvent(const wxKeyEvent &);
-        PyObject *py_event = Borrow__KeyEvent(e);
+        PyObject *Borrow__PressAndTapEvent(const wxPressAndTapEvent &);
+        PyObject *py_event = Borrow__PressAndTapEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxMouseEvent &e) {
+    void operator()(wxMenuEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__MouseEvent(const wxMouseEvent &);
-        PyObject *py_event = Borrow__MouseEvent(e);
+        PyObject *Borrow__MenuEvent(const wxMenuEvent &);
+        PyObject *py_event = Borrow__MenuEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxSysColourChangedEvent &e) {
+    void operator()(wxSetCursorEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__SysColourChangedEvent(const wxSysColourChangedEvent &);
-        PyObject *py_event = Borrow__SysColourChangedEvent(e);
+        PyObject *Borrow__SetCursorEvent(const wxSetCursorEvent &);
+        PyObject *py_event = Borrow__SetCursorEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxWindowCreateEvent &e) {
+    void operator()(wxMouseCaptureChangedEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__WindowCreateEvent(const wxWindowCreateEvent &);
-        PyObject *py_event = Borrow__WindowCreateEvent(e);
+        PyObject *Borrow__MouseCaptureChangedEvent(const wxMouseCaptureChangedEvent &);
+        PyObject *py_event = Borrow__MouseCaptureChangedEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxQueryNewPaletteEvent &e) {
+    void operator()(wxClipboardEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__QueryNewPaletteEvent(const wxQueryNewPaletteEvent &);
-        PyObject *py_event = Borrow__QueryNewPaletteEvent(e);
+        PyObject *Borrow__ClipboardEvent(const wxClipboardEvent &);
+        PyObject *py_event = Borrow__ClipboardEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxSizeEvent &e) {
+    void operator()(wxLongPressEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__SizeEvent(const wxSizeEvent &);
-        PyObject *py_event = Borrow__SizeEvent(e);
+        PyObject *Borrow__LongPressEvent(const wxLongPressEvent &);
+        PyObject *py_event = Borrow__LongPressEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxDropFilesEvent &e) {
+    void operator()(wxTreeEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__DropFilesEvent(const wxDropFilesEvent &);
-        PyObject *py_event = Borrow__DropFilesEvent(e);
+        PyObject *Borrow__TreeEvent(const wxTreeEvent &);
+        PyObject *py_event = Borrow__TreeEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxAsyncMethodCallEvent &e) {
+    void operator()(wxDisplayChangedEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__AsyncMethodCallEvent(const wxAsyncMethodCallEvent &);
-        PyObject *py_event = Borrow__AsyncMethodCallEvent(e);
+        PyObject *Borrow__DisplayChangedEvent(const wxDisplayChangedEvent &);
+        PyObject *py_event = Borrow__DisplayChangedEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxJoystickEvent &e) {
+    void operator()(wxRotateGestureEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__JoystickEvent(const wxJoystickEvent &);
-        PyObject *py_event = Borrow__JoystickEvent(e);
+        PyObject *Borrow__RotateGestureEvent(const wxRotateGestureEvent &);
+        PyObject *py_event = Borrow__RotateGestureEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxUpdateUIEvent &e) {
+    void operator()(wxTwoFingerTapEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__UpdateUIEvent(const wxUpdateUIEvent &);
-        PyObject *py_event = Borrow__UpdateUIEvent(e);
+        PyObject *Borrow__TwoFingerTapEvent(const wxTwoFingerTapEvent &);
+        PyObject *py_event = Borrow__TwoFingerTapEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxScrollWinEvent &e) {
+    void operator()(wxActivateEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ScrollWinEvent(const wxScrollWinEvent &);
-        PyObject *py_event = Borrow__ScrollWinEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxScrollEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ScrollEvent(const wxScrollEvent &);
-        PyObject *py_event = Borrow__ScrollEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxEraseEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__EraseEvent(const wxEraseEvent &);
-        PyObject *py_event = Borrow__EraseEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxTimerEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__TimerEvent(const wxTimerEvent &);
-        PyObject *py_event = Borrow__TimerEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxMouseCaptureLostEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__MouseCaptureLostEvent(const wxMouseCaptureLostEvent &);
-        PyObject *py_event = Borrow__MouseCaptureLostEvent(e);
+        PyObject *Borrow__ActivateEvent(const wxActivateEvent &);
+        PyObject *py_event = Borrow__ActivateEvent(e);
         DoCall(py_event);
     }
 
@@ -198,10 +170,10 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxPaletteChangedEvent &e) {
+    void operator()(wxFocusEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__PaletteChangedEvent(const wxPaletteChangedEvent &);
-        PyObject *py_event = Borrow__PaletteChangedEvent(e);
+        PyObject *Borrow__FocusEvent(const wxFocusEvent &);
+        PyObject *py_event = Borrow__FocusEvent(e);
         DoCall(py_event);
     }
 
@@ -209,6 +181,139 @@ public:
         PBPP_NEW_THREAD_BLOCKER
         PyObject *Borrow__PaintEvent(const wxPaintEvent &);
         PyObject *py_event = Borrow__PaintEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxZoomGestureEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ZoomGestureEvent(const wxZoomGestureEvent &);
+        PyObject *py_event = Borrow__ZoomGestureEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxScrollEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ScrollEvent(const wxScrollEvent &);
+        PyObject *py_event = Borrow__ScrollEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxInitDialogEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__InitDialogEvent(const wxInitDialogEvent &);
+        PyObject *py_event = Borrow__InitDialogEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxJoystickEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__JoystickEvent(const wxJoystickEvent &);
+        PyObject *py_event = Borrow__JoystickEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxDropFilesEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__DropFilesEvent(const wxDropFilesEvent &);
+        PyObject *py_event = Borrow__DropFilesEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxQueryNewPaletteEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__QueryNewPaletteEvent(const wxQueryNewPaletteEvent &);
+        PyObject *py_event = Borrow__QueryNewPaletteEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxKeyEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__KeyEvent(const wxKeyEvent &);
+        PyObject *py_event = Borrow__KeyEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxProcessEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ProcessEvent(const wxProcessEvent &);
+        PyObject *py_event = Borrow__ProcessEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxScrollWinEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ScrollWinEvent(const wxScrollWinEvent &);
+        PyObject *py_event = Borrow__ScrollWinEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxChildFocusEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ChildFocusEvent(const wxChildFocusEvent &);
+        PyObject *py_event = Borrow__ChildFocusEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxIconizeEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__IconizeEvent(const wxIconizeEvent &);
+        PyObject *py_event = Borrow__IconizeEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxMouseCaptureLostEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__MouseCaptureLostEvent(const wxMouseCaptureLostEvent &);
+        PyObject *py_event = Borrow__MouseCaptureLostEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxNcPaintEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__NcPaintEvent(const wxNcPaintEvent &);
+        PyObject *py_event = Borrow__NcPaintEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxThreadEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ThreadEvent(const wxThreadEvent &);
+        PyObject *py_event = Borrow__ThreadEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxSizeEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__SizeEvent(const wxSizeEvent &);
+        PyObject *py_event = Borrow__SizeEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxEraseEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__EraseEvent(const wxEraseEvent &);
+        PyObject *py_event = Borrow__EraseEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxHelpEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__HelpEvent(const wxHelpEvent &);
+        PyObject *py_event = Borrow__HelpEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxCloseEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__CloseEvent(const wxCloseEvent &);
+        PyObject *py_event = Borrow__CloseEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxWindowCreateEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__WindowCreateEvent(const wxWindowCreateEvent &);
+        PyObject *py_event = Borrow__WindowCreateEvent(e);
         DoCall(py_event);
     }
 
@@ -226,66 +331,10 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxFocusEvent &e) {
+    void operator()(wxWindowDestroyEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__FocusEvent(const wxFocusEvent &);
-        PyObject *py_event = Borrow__FocusEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxIdleEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__IdleEvent(const wxIdleEvent &);
-        PyObject *py_event = Borrow__IdleEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxClipboardEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ClipboardEvent(const wxClipboardEvent &);
-        PyObject *py_event = Borrow__ClipboardEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxTextUrlEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__TextUrlEvent(const wxTextUrlEvent &);
-        PyObject *py_event = Borrow__TextUrlEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxTreeEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__TreeEvent(const wxTreeEvent &);
-        PyObject *py_event = Borrow__TreeEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxThreadEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ThreadEvent(const wxThreadEvent &);
-        PyObject *py_event = Borrow__ThreadEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxContextMenuEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ContextMenuEvent(const wxContextMenuEvent &);
-        PyObject *py_event = Borrow__ContextMenuEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxCloseEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__CloseEvent(const wxCloseEvent &);
-        PyObject *py_event = Borrow__CloseEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxInitDialogEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__InitDialogEvent(const wxInitDialogEvent &);
-        PyObject *py_event = Borrow__InitDialogEvent(e);
+        PyObject *Borrow__WindowDestroyEvent(const wxWindowDestroyEvent &);
+        PyObject *py_event = Borrow__WindowDestroyEvent(e);
         DoCall(py_event);
     }
 
@@ -296,24 +345,17 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxIconizeEvent &e) {
+    void operator()(wxMouseEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__IconizeEvent(const wxIconizeEvent &);
-        PyObject *py_event = Borrow__IconizeEvent(e);
+        PyObject *Borrow__MouseEvent(const wxMouseEvent &);
+        PyObject *py_event = Borrow__MouseEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxDisplayChangedEvent &e) {
+    void operator()(wxAsyncMethodCallEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__DisplayChangedEvent(const wxDisplayChangedEvent &);
-        PyObject *py_event = Borrow__DisplayChangedEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxShowEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ShowEvent(const wxShowEvent &);
-        PyObject *py_event = Borrow__ShowEvent(e);
+        PyObject *Borrow__AsyncMethodCallEvent(const wxAsyncMethodCallEvent &);
+        PyObject *py_event = Borrow__AsyncMethodCallEvent(e);
         DoCall(py_event);
     }
 
@@ -324,13 +366,6 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxMenuEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__MenuEvent(const wxMenuEvent &);
-        PyObject *py_event = Borrow__MenuEvent(e);
-        DoCall(py_event);
-    }
-
     void operator()(wxBookCtrlEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
         PyObject *Borrow__BookCtrlEvent(const wxBookCtrlEvent &);
@@ -338,52 +373,31 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxNcPaintEvent &e) {
+    void operator()(wxUpdateUIEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__NcPaintEvent(const wxNcPaintEvent &);
-        PyObject *py_event = Borrow__NcPaintEvent(e);
+        PyObject *Borrow__UpdateUIEvent(const wxUpdateUIEvent &);
+        PyObject *py_event = Borrow__UpdateUIEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxChildFocusEvent &e) {
+    void operator()(wxTimerEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ChildFocusEvent(const wxChildFocusEvent &);
-        PyObject *py_event = Borrow__ChildFocusEvent(e);
+        PyObject *Borrow__TimerEvent(const wxTimerEvent &);
+        PyObject *py_event = Borrow__TimerEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxProcessEvent &e) {
+    void operator()(wxPanGestureEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ProcessEvent(const wxProcessEvent &);
-        PyObject *py_event = Borrow__ProcessEvent(e);
+        PyObject *Borrow__PanGestureEvent(const wxPanGestureEvent &);
+        PyObject *py_event = Borrow__PanGestureEvent(e);
         DoCall(py_event);
     }
 
-    void operator()(wxWindowDestroyEvent &e) {
+    void operator()(wxContextMenuEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__WindowDestroyEvent(const wxWindowDestroyEvent &);
-        PyObject *py_event = Borrow__WindowDestroyEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxActivateEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__ActivateEvent(const wxActivateEvent &);
-        PyObject *py_event = Borrow__ActivateEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxMouseCaptureChangedEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__MouseCaptureChangedEvent(const wxMouseCaptureChangedEvent &);
-        PyObject *py_event = Borrow__MouseCaptureChangedEvent(e);
-        DoCall(py_event);
-    }
-
-    void operator()(wxHelpEvent &e) {
-        PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__HelpEvent(const wxHelpEvent &);
-        PyObject *py_event = Borrow__HelpEvent(e);
+        PyObject *Borrow__ContextMenuEvent(const wxContextMenuEvent &);
+        PyObject *py_event = Borrow__ContextMenuEvent(e);
         DoCall(py_event);
     }
 
@@ -394,10 +408,31 @@ public:
         DoCall(py_event);
     }
 
-    void operator()(wxSetCursorEvent &e) {
+    void operator()(wxPaletteChangedEvent &e) {
         PBPP_NEW_THREAD_BLOCKER
-        PyObject *Borrow__SetCursorEvent(const wxSetCursorEvent &);
-        PyObject *py_event = Borrow__SetCursorEvent(e);
+        PyObject *Borrow__PaletteChangedEvent(const wxPaletteChangedEvent &);
+        PyObject *py_event = Borrow__PaletteChangedEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxShowEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__ShowEvent(const wxShowEvent &);
+        PyObject *py_event = Borrow__ShowEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxSysColourChangedEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__SysColourChangedEvent(const wxSysColourChangedEvent &);
+        PyObject *py_event = Borrow__SysColourChangedEvent(e);
+        DoCall(py_event);
+    }
+
+    void operator()(wxIdleEvent &e) {
+        PBPP_NEW_THREAD_BLOCKER
+        PyObject *Borrow__IdleEvent(const wxIdleEvent &);
+        PyObject *py_event = Borrow__IdleEvent(e);
         DoCall(py_event);
     }
 };
@@ -407,7 +442,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 bool DoPyBind
-(wxEvtHandler *p, wxEventType event, PyObject *callable, int id, int lastId, 
+(wxEvtHandler *p, wxEventType event, PyObject *callable, int id, int lastId,
  wxObject *userData, bool unbind) {
     PBPP_NEW_THREAD_BLOCKER
 
@@ -459,6 +494,7 @@ bool DoPyBind
         PYEVENT(wxEVT_AUX2_DOWN)
         PYEVENT(wxEVT_AUX2_UP)
         PYEVENT(wxEVT_AUX2_DCLICK)
+        PYEVENT(wxEVT_MAGNIFY)
         PYEVENT(wxEVT_CHAR)
         PYEVENT(wxEVT_CHAR_HOOK)
         PYEVENT(wxEVT_NAVIGATION_KEY)
@@ -484,6 +520,12 @@ bool DoPyBind
         PYEVENT(wxEVT_SCROLLWIN_PAGEDOWN)
         PYEVENT(wxEVT_SCROLLWIN_THUMBTRACK)
         PYEVENT(wxEVT_SCROLLWIN_THUMBRELEASE)
+        PYEVENT(wxEVT_GESTURE_PAN)
+        PYEVENT(wxEVT_GESTURE_ZOOM)
+        PYEVENT(wxEVT_GESTURE_ROTATE)
+        PYEVENT(wxEVT_TWO_FINGER_TAP)
+        PYEVENT(wxEVT_LONG_PRESS)
+        PYEVENT(wxEVT_PRESS_AND_TAP)
         PYEVENT(wxEVT_SIZE)
         PYEVENT(wxEVT_MOVE)
         PYEVENT(wxEVT_CLOSE_WINDOW)
@@ -525,10 +567,6 @@ bool DoPyBind
         PYEVENT(wxEVT_TEXT_COPY)
         PYEVENT(wxEVT_TEXT_CUT)
         PYEVENT(wxEVT_TEXT_PASTE)
-        PYEVENT(wxEVT_TEXT)
-        PYEVENT(wxEVT_TEXT_ENTER)
-        PYEVENT(wxEVT_TEXT_URL)
-        PYEVENT(wxEVT_TEXT_MAXLEN)
         PYEVENT(wxEVT_COMMAND_LEFT_CLICK)
         PYEVENT(wxEVT_COMMAND_LEFT_DCLICK)
         PYEVENT(wxEVT_COMMAND_RIGHT_CLICK)
@@ -538,6 +576,7 @@ bool DoPyBind
         PYEVENT(wxEVT_COMMAND_ENTER)
         PYEVENT(wxEVT_HELP)
         PYEVENT(wxEVT_DETAILED_HELP)
+        PYEVENT(wxEVT_TEXT)
         PYEVENT(wxEVT_LIST_BEGIN_DRAG)
         PYEVENT(wxEVT_LIST_BEGIN_RDRAG)
         PYEVENT(wxEVT_LIST_BEGIN_LABEL_EDIT)
@@ -591,14 +630,14 @@ bool DoPyBind
 }
 
 bool DoPyBind
-(wxEvtHandler *p, const wxPyEventType &event, PyObject *callable, 
+(wxEvtHandler *p, const wxPyEventType &event, PyObject *callable,
  int id, int lastId, wxObject *userData, bool unbind) {
     PBPP_NEW_THREAD_BLOCKER
 
     static Functor s_functor;
     s_functor.m_callable = callable;
     bool ret = true;
-    
+
     if (event.IsCommandEvent()) {
         wxEventTypeTag<wxPyCommandEvent> tag(event.GetEventType());
         if (unbind) {

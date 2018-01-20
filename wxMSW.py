@@ -225,6 +225,7 @@ class WxBlacklist(Module.Blacklist):
         "wxBitmap::GetBitmapData() const",
         "wxPen::Recreate()",
 
+        # TODO: HDC
         "wxDC::GetImpl()",
         "wxDC::GetImpl() const",
         "wxDC::AcquireHDC()",
@@ -241,7 +242,7 @@ class WxBlacklist(Module.Blacklist):
         "wxWindowBase::GetConstraintsInvolvedIn() const",
         "wxFrame::GetDefaultIcon() const",
 
-        "wxAppConsoleBase::HandleEvent(wxEvtHandler *, void (wxEvtHandler::*)(wxEvent &), wxEvent &) const",
+        "wxAppConsoleBase::HandleEvent(wxEvtHandler *, wxEventFunction, wxEvent &) const",
         "wxAppConsoleBase::CallEventHandler(wxEvtHandler *, wxEventFunctor &, wxEvent &) const",
         "wxApp::InitRichEdit(int)",  # TODO: wxMSW only?
         "wxPyApp::SetStartupComplete(bool)",
@@ -313,6 +314,7 @@ class WxBlacklist(Module.Blacklist):
         "wxDataObject::GetInterface() const",
 
         # seem not implemented
+        "wxChoice::Free()",
         "wxListBox::Free()",
         "wxMenuItemBase::GetAccelFromString(const wxString &)",
         "wxMenuBase::New(const wxString &, long)",
@@ -369,15 +371,16 @@ class WxBlacklist(Module.Blacklist):
     }
 
     _simple_dummy_classes = (
-        "HWND__",
         "HBRUSH__",
+        "HDC__",
         "HMENU__",
+        "HWND__",
 
         "wxToolTip",
         "wxScrollHelper",
         "wxDropTarget",
         "wxCaret",
-        "wxDynamicEventTableEntry",  # TODO:
+        "wxDynamicEventTableEntry",
         "wxTrackerNode",
         "wxLayoutConstraints",
 
@@ -413,6 +416,8 @@ class WxBlacklist(Module.Blacklist):
 
             if cls[0] == 'H' and cls.endswith("__"):
                 self.dummy_classes[cls].is_struct = True
+
+        self.dummy_classes["wxDynamicEventTableEntry"].is_struct = True
 
     def namespace(self, ns):
         return ns in self._namespaces

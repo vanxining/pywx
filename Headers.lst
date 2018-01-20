@@ -52,7 +52,6 @@ D:\Work\CppLibs\wxMSW\include\wx\textentry.h
 D:\Work\CppLibs\wxMSW\include\wx\textctrl.h
 D:\Work\CppLibs\wxMSW\include\wx\sizer.h
 D:\Work\CppLibs\wxMSW\include\wx\imaglist.h
-D:\Work\CppLibs\wxMSW\include\wx\listbase.h
 D:\Work\CppLibs\wxMSW\include\wx\listctrl.h
 D:\Work\CppLibs\wxMSW\include\wx\ctrlsub.h
 D:\Work\CppLibs\wxMSW\include\wx\msw\ownerdrawnbutton.h
@@ -85,3 +84,5 @@ D:\Work\CppLibs\wxMSW\include\wx\validate.h
 D:\Work\CppLibs\wxMSW\include\wx\valtext.h
 D:\Work\CppLibs\wxMSW\include\wx\clipbrd.h
 D:\Work\CppLibs\wxMSW\include\wx\dataobj.h
+D:\Work\CppLibs\wxMSW\include\wx\choice.h
+D:\Work\CppLibs\wxMSW\include\wx\choicebk.h
