@@ -196,7 +196,7 @@ class WxBlacklist(Module.Blacklist):
     )
 
     # match at start
-    _method_patters = (
+    _method_patterns = (
         re.compile(r"\W(begin|end)\W.+"),
 
         re.compile(r"[\w+:]*wxCreateObject\(\)"),
@@ -210,6 +210,7 @@ class WxBlacklist(Module.Blacklist):
         re.compile(r".+TransformMatrix.+"),
         re.compile(r".+Event(Hash)?Table.+"),
         re.compile(r"wxEvtHandler::(C|Disc)onnect.+"),
+        re.compile(r"wxApp\w*::CleanUp\(\)"),  # use OnExit()
         re.compile(r".+wxCmdLineParser.+"),
     ) + _common_method_patterns
 
@@ -440,7 +441,7 @@ class WxBlacklist(Module.Blacklist):
         return full_name in self._bases
 
     def method(self, mname):
-        for pattern in self._method_patters:
+        for pattern in self._method_patterns:
             if pattern.match(mname):
                 return True
 
@@ -515,6 +516,7 @@ class WxStringConv(Converters.Converter):
         return "!PyUnicode_Check(%s)" % py_var_name
 
     def extracting_code(self, cpp_type, var_name, py_var_name, error_return, namer):
+        # TODO: PyUnicode_AsUnicode() deprecated
         return cpp_type.declare_var(var_name, "PyUnicode_AsUnicode(%s)" % py_var_name)
 
     def build(self, cpp_type, var_name, py_var_name, namer, raii):

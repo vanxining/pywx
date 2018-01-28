@@ -21,34 +21,34 @@ class wxPyEventType;
 /// 将某事件绑定/解绑某个 Python callable
 
 void wxPyBind
-   (wxEvtHandler *p, 
-    int event, 
-    PyObject *callable, 
-    int id = -1, 
-    int lastId = -1, 
+   (wxEvtHandler *p,
+    int event,
+    PyObject *callable,
+    int id = -1,
+    int lastId = -1,
     wxObject *userData = nullptr);
 
 void wxPyBind
-   (wxEvtHandler *p, 
-    const wxPyEventType &event, 
-    PyObject *callable, 
-    int id = -1, 
+   (wxEvtHandler *p,
+    const wxPyEventType &event,
+    PyObject *callable,
+    int id = -1,
     int lastId = -1,
     wxObject *userData = nullptr);
 
 bool wxPyUnbind
-   (wxEvtHandler *p, 
-    int event, 
-    PyObject *callable, 
-    int id = -1, 
+   (wxEvtHandler *p,
+    int event,
+    PyObject *callable,
+    int id = -1,
     int lastId = -1,
     wxObject *userData = nullptr);
 
 bool wxPyUnbind
-   (wxEvtHandler *p, 
-    const wxPyEventType &event, 
-    PyObject *callable, 
-    int id = -1, 
+   (wxEvtHandler *p,
+    const wxPyEventType &event,
+    PyObject *callable,
+    int id = -1,
     int lastId = -1,
     wxObject *userData = nullptr);
 
@@ -70,7 +70,7 @@ public:
 
 private:
 
-    wxPyEvent &operator=(const wxPyEvent &);
+    wxPyEvent &operator=(const wxPyEvent &) = delete;
     DECLARE_DYNAMIC_CLASS(wxPyEvent)
 };
 
@@ -85,7 +85,7 @@ public:
 
 private:
 
-    wxPyCommandEvent &operator=(const wxPyCommandEvent &);
+    wxPyCommandEvent &operator=(const wxPyCommandEvent &) = delete;
     DECLARE_DYNAMIC_CLASS(wxPyCommandEvent)
 };
 
@@ -95,7 +95,7 @@ public:
 
     /// 构造函数
     wxPyEventType(wxEventType id, bool isCommandEvent);
-    
+
     wxEventType GetEventType() const {
         return m_id;
     }

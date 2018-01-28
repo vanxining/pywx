@@ -2,12 +2,14 @@
  * Name:      PyApp.cxx
  * Purpose:   wxApp °ü¹üÆ÷
  * Author:    Wang Xiaoning (vanxining@139.com)
- * Created:   2014-1
+ * Created:   2014-01
  **************************************************************/
 #include "StdAfx.hpp"
 
+#include "../Gen/_Python.hxx" // Let it be the first.
+
 #include "PyApp.hxx"
-#include "../Gen/_Python.hxx"
+
 #include "../Gen/_Common.hxx"
 
 #ifdef __WXGTK__
@@ -26,7 +28,7 @@
 #   include <wx/msw/msvcrt.h>
 #endif
 
-#include <cstdio> // for fprintf(), stderr
+#include <cstdio> // For fprintf(), stderr
 
 #ifdef __WXMSW__
 
@@ -41,8 +43,15 @@ ULONG_PTR g_act_ctx_cookie = 0;
 
 static void ReportLastError(const char *func_name) {
     char buf[256];
-    FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), buf, 256, NULL);
+    FormatMessageA(
+        FORMAT_MESSAGE_FROM_SYSTEM,
+        nullptr,
+        GetLastError(),
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        buf,
+        256,
+        nullptr
+    );
 
     printf("[%s] %s\n", func_name, buf);
 }
@@ -99,7 +108,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
 IMPLEMENT_ABSTRACT_CLASS(wxPyApp, wxApp);
 
 wxPyApp::wxPyApp()
-    : m_startupCompleted(false), m_argv(nullptr) {
+    : m_startup_completed(false), m_argv(nullptr) {
 #if defined(__WXMSW__) && PY_MAJOR_VERSION < 3
     EnableVisualStyles();
 #endif
@@ -126,40 +135,43 @@ wxPyApp::~wxPyApp() {
 }
 
 void wxPyApp::SetStartupComplete(bool complete) {
-    m_startupCompleted = complete;
+    m_startup_completed = complete;
 }
 
 void wxPyApp::_BootstrapApp() {
-    static bool haveInitialized = false;
-    bool        result;
+    static bool s_initialized = false;
+    bool result = false;
 
-    // Only initialize wxWidgets once
-    if (!haveInitialized) {
+    // Only initialize wxWidgets once.
+    if (!s_initialized) {
         // Copy the values in Python's sys.argv list to a C array to
-        // be passed to the wxEntryStart function below
+        // be passed to the wxEntryStart function below.
 
         int argc = 0;
-
         {
             PBPP_NEW_THREAD_BLOCKER
 
-            PyObject *sysargv = PySys_GetObject("argv");
-            if (sysargv != nullptr) {
-                argc = PyList_Size(sysargv);
-                m_argv = new arg_char_type*[argc + 1];
+            PyObject *sys_argv = PySys_GetObject("argv");
+            if (sys_argv != nullptr) {
+                argc = PyList_Size(sys_argv);
+                m_argv = new arg_char_type *[argc + 1];
 
-                for (int x = 0; x < argc; x++) {
-                    PyObject *py_arg = PyList_GetItem(sysargv, x); // Borrowed reference
-                    // If there isn't anything in sys.argv[0] then set it to the Python executable
-                    if (x == 0 && PyObject_Length(py_arg) < 1) {
+                for (int i = 0; i < argc; i++) {
+                    PyObject *py_arg = PyList_GetItem(sys_argv, i); // Borrowed reference
+                    // If there isn't anything in sys.argv[0] then set it to the Python executable.
+                    if (i == 0 && PyObject_Size(py_arg) < 1) {
                         py_arg = PySys_GetObject("executable");
                     }
 #if PY_MAJOR_VERSION >= 3
-                    int len = PyObject_Length(py_arg);
-                    m_argv[x] = new arg_char_type[len + 1];
-                    wxPyUnicode_AsWideChar(py_arg, m_argv[x], len + 1);
+                    Py_ssize_t len = PyObject_Size(py_arg);
+                    if (len > 0) {
+                        m_argv[i] = new arg_char_type[len + 1];
+                        PyUnicode_AsWideChar(py_arg, m_argv[i], len + 1);
+                    } else {
+                        m_argv[i] = nullptr;
+                    }
 #else
-                    m_argv[x] = _strdup(PyBytes_AsString(py_arg));
+                    m_argv[i] = _strdup(PyBytes_AsString(py_arg));
 #endif
                 }
 
@@ -167,12 +179,12 @@ void wxPyApp::_BootstrapApp() {
             }
         }
 
-        // Initialize wxWidgets
+        // Initialize wxWidgets.
 #ifdef __WXOSX__
         wxMacAutoreleasePool autoreleasePool;
 #endif
         result = wxEntryStart(argc, m_argv);
-        // wxApp takes ownership of the argv array, don't delete it here
+        // wxApp takes ownership of the argv array, don't delete it here.
 
         if (!result) {
             PBPP_NEW_THREAD_BLOCKER
@@ -188,15 +200,15 @@ void wxPyApp::_BootstrapApp() {
 
         Py_AtExit(wxEntryCleanup);
 
-        haveInitialized = true;
+        s_initialized = true;
     } else {
         wxApp::argc = 0;
     }
 
-    // It's now ok to generate exceptions for assertion errors
+    // It's now ok to generate exceptions for assertion errors.
     SetStartupComplete(true);
 
-    // Call the Python wxApp's OnInit function if it exists
+    // Call the Python wxApp's OnInit function if it exists.
     result = OnInit();
 
     if (!result) {

@@ -1,8 +1,10 @@
-#! python2.7-32
 # -*- coding: utf-8 -*-
 
 import sys
-import thread
+try:
+    import thread
+except ModuleNotFoundError:
+    import _thread as thread
 import time
 import traceback
 

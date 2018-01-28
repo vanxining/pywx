@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 
-import sys
 import os
+import sys
 
 
 if os.path.exists("pywx.vcxproj.user"):
@@ -11,7 +12,7 @@ else:
 args = []
 
 shared = False
-if "static" not in sys.argv:
+if "shared" in sys.argv:
     shared = True
     args.append("--wx-shared")
 
@@ -24,12 +25,12 @@ print("Arguments: shared=%d, pydebug=%d" % (shared, pydebug))
 
 os.system("premake4 %s vs2012" % " ".join(args))
 
-prj = open("pywx.vcxproj").read()
-prj = prj.replace("v110", "v140")
+prj = open("pywx.vcxproj", "r", encoding="utf-8").read()
+prj = prj.replace("v110", "v141")
 
-with open("pywx.vcxproj", "w") as outf:
+with open("pywx.vcxproj", "w", encoding="utf-8") as outf:
     outf.write(prj)
 
 if user:
-    with open("pywx.vcxproj.user", "w") as outf:
+    with open("pywx.vcxproj.user", "w", encoding="utf-8") as outf:
         outf.write(user)

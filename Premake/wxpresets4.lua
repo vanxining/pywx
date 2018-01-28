@@ -7,20 +7,20 @@
 
 function ActionUsesGCC()
     if _ACTION then
-        match = string.find( "gmake codelite codeblocks xcode3", _ACTION )
+        match = string.find("gmake codelite codeblocks xcode3", _ACTION)
         return match ~= nil
     end
-    
+
     return false
 end
 
 function ActionUsesMSVC()
-    return _ACTION and _ACTION:find( "vs" )
+    return _ACTION and _ACTION:find("vs")
 end
 
-function GetCustomValue( item )
+function GetCustomValue(item)
     local prj = project()
-    for _, block in pairs( prj.blocks ) do
+    for _, block in pairs(prj.blocks) do
         if block[item] then
             return block[item]
         end
@@ -44,54 +44,54 @@ wx = {}
 
 
 if "windows" == os.get() then
-    wx.root = os.getenv( "WXWIN" )
+    wx.root = os.getenv("WXWIN")
     if not wx.root then
-        error( "missing the WXWIN environment variable" )
+        error("missing the WXWIN environment variable")
     end
-    
-    --check for headers existing.
-    local f = io.open( wx.root .. "/include/wx/wx.h" )
+
+    -- Ensure that headers exist.
+    local f = io.open(wx.root .. "/include/wx/wx.h")
     if f == nil then
-        error( "can't find include/wx/wx.h! - check the value of WXWIN (" .. wx.root .. ")" )
+        error("can't find include/wx/wx.h! - check the value of WXWIN (" .. wx.root .. ")")
     end
-    
+
 end
 
 --- Configure a C/C++ package to use wxWidgets
---- wx.Configure( shouldSetTarget = true, wxVer = "30" )
-function wx.Configure( shouldSetTarget, wxVer )
+--- wx.Configure(shouldSetTarget = true, wxVer = "30")
+function wx.Configure(shouldSetTarget, wxVer)
     -- Set the default values.
     if shouldSetTarget == nil then shouldSetTarget = true end
     local targetName = project().name
     local wx_ver = wxVer or "30"
-    
+
     ----------------------------------------------------------
 
     flags "Unicode"
-    
+
     -- Set the defines.
     defines "wxUSE_UNICODE"
     defines "__WX__"
-    
+
     ----------------------------------------------------------
-    
+
     configuration "Debug"
         defines "__WXDEBUG__"
         flags "Symbols"
-    
+
     configuration "Release"
         flags "Optimize"
-    
-    configuration( {} )
+
+    configuration({})
 
     if _OPTIONS["wx-shared"] then
         defines "WXUSINGDLL"
     end
-    
+
     ----------------------------------------------------------
-    
-    local kindVal = GetCustomValue( "kind" ) or ""
-    
+
+    local kindVal = GetCustomValue("kind") or ""
+
     if "windows" == os.get() then
         -- ******* WINDOWS SETUP ***********
         -- *    Settings that are Windows specific.
@@ -152,8 +152,8 @@ function wx.Configure( shouldSetTarget, wxVer )
                     includedirs { wx.root .. "/lib/vc_lib/mswu" }
             end
         end
-            
-        configuration( {} )
+
+        configuration({})
 
         -- Set the linker options.
 
@@ -183,7 +183,7 @@ function wx.Configure( shouldSetTarget, wxVer )
             "winspool", "shell32", "kernel32"
         }
         if ActionUsesMSVC() then
-            table.insert( winLibs, { "gdiplus" } )
+            table.insert(winLibs, { "gdiplus" })
         end
 
         -- Set wxWidgets libraries to link. The order we insert matters for the linker.
@@ -194,44 +194,44 @@ function wx.Configure( shouldSetTarget, wxVer )
         local wxLibs2 = {
             "wxexpat", "wxjpeg", "wxpng", "wxregexu", "wxtiff", "wxzlib"
         }
-        
+
         configuration { "Debug", "not StaticLib" }
             links { "wxbase" ..  wx_ver .. "ud" }
             links { "wxbase" ..  wx_ver .. "ud_xml" }
-            for _, lib in ipairs( wxLibs ) do
+            for _, lib in ipairs(wxLibs) do
                 links { "wxmsw" .. wx_ver .. "ud_" .. lib }
             end
-            for _, lib in ipairs( wxLibs2 ) do
+            for _, lib in ipairs(wxLibs2) do
                 links { lib .. "d" }
             end
-            for _, lib in ipairs( winLibs ) do
-                links { lib }
-            end
-            
-        configuration { "Release", "not StaticLib" }
-            links { "wxbase" ..  wx_ver .. "u" }
-            links { "wxbase" ..  wx_ver .. "u_xml" }
-            for _, lib in ipairs( wxLibs ) do
-                links { "wxmsw" .. wx_ver .. "u_" .. lib }
-            end
-            for _, lib in ipairs( wxLibs2 ) do
-                links { lib }
-            end
-            for _, lib in ipairs( winLibs ) do
+            for _, lib in ipairs(winLibs) do
                 links { lib }
             end
 
-        configuration( {} )
-        
+        configuration { "Release", "not StaticLib" }
+            links { "wxbase" ..  wx_ver .. "u" }
+            links { "wxbase" ..  wx_ver .. "u_xml" }
+            for _, lib in ipairs(wxLibs) do
+                links { "wxmsw" .. wx_ver .. "u_" .. lib }
+            end
+            for _, lib in ipairs(wxLibs2) do
+                links { lib }
+            end
+            for _, lib in ipairs(winLibs) do
+                links { lib }
+            end
+
+        configuration({})
+
         if kindVal == "WindowedApp" then
             flags { "WinMain" }
         end
-        
+
         -- Set the Windows defines.
         defines { "__WXMSW__" }
         -- Set the targets.
         if shouldSetTarget then
-            if not ( kindVal == "WindowedApp" or kindVal == "ConsoleApp" ) then
+            if not (kindVal == "WindowedApp" or kindVal == "ConsoleApp") then
                 if ActionUsesGCC() then
                     configuration { "Debug" }
                         targetdir { "wxmsw" .. wx_ver .. "umd_" .. targetName .. "_gcc" }
@@ -245,9 +245,9 @@ function wx.Configure( shouldSetTarget, wxVer )
                 end
             end
         end
-        
-        configuration( {} )
-        
+
+        configuration({})
+
     else
     -- ******* LINUX SETUP *************
     -- *    Settings that are Linux specific.
@@ -266,24 +266,24 @@ function wx.Configure( shouldSetTarget, wxVer )
             linkoptions { "`wx-config --libs std`" }
 
         -- Set the Linux defines.
-        configuration( {} )
+        configuration({})
         defines "__WXGTK__"
 
         -- Set the targets.
         if shouldSetTarget then
-            if not ( kindVal == "WindowedApp" or kindVal == "ConsoleApp" ) then
+            if not (kindVal == "WindowedApp" or kindVal == "ConsoleApp") then
                 configuration { "Debug" }
-                    targetdir { wx.LibName( targetName, wxVer, true ) }
+                    targetdir { wx.LibName(targetName, wxVer, true) }
                 configuration { "Release" }
-                    targetdir { wx.LibName( targetName, wxVer ) }
+                    targetdir { wx.LibName(targetName, wxVer) }
             end
         end
     end
 
-    configuration( {} )
+    configuration({})
 end
 
-function wx.PosixLibName( targetName, isDebug )
+function wx.PosixLibName(targetName, isDebug)
     local dbg = isDebug or false
     local debug = "no"
     if dbg then debug = "yes" end
@@ -291,7 +291,7 @@ function wx.PosixLibName( targetName, isDebug )
     return
 end
 
-function wx.LibName( targetName, wxVer, isDebug )
+function wx.LibName(targetName, wxVer, isDebug)
     local name = ""
     -- Make the parameters optional.
     local wx_ver = wxVer or "30"
@@ -307,7 +307,7 @@ function wx.LibName( targetName, wxVer, isDebug )
         if _OPTIONS["wx-shared"] then monolithic = "m" end
         name = "wxmsw" .. wx_ver .. unicode .. monolithic .. debug .. "_" .. targetName
     elseif "linux" == os.get() then
-        wx_ver = wx_ver:sub( 1, 1 ) .. "." .. wx_ver:sub( 2 )
+        wx_ver = wx_ver:sub(1, 1) .. "." .. wx_ver:sub(2)
         name = "wx_gtk2" .. unicode .. debug .. "_" .. targetName:lower() .. "-" .. wx_ver
     else
         local debug = "no"

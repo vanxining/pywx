@@ -13,10 +13,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-PyObject * OutputStream_Write(wxOutputStream *outs, PyObject *bytes) {
+PyObject *OutputStream_Write(wxOutputStream *outs, PyObject *bytes) {
     pbpp::ThreadBlocker blocker;
 
-    bool ok = outs->WriteAll(PyString_AsString(bytes), PyString_Size(bytes));
+    bool ok = outs->WriteAll(PyBytes_AsString(bytes), PyBytes_Size(bytes));
     return PyBool_FromLong(ok ? 1 : 0);
 }
 

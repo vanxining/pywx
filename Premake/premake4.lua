@@ -36,9 +36,9 @@ solution "pywx"
            ["Source Files/*"] = sources,
         }
 
-        py_ver = "27"
+        py_ver = 27
 
-        if _OPTIONS["pydebug"] then
+        if _OPTIONS["pydebug"] and py_ver < 30 then
             python_root = os.getenv("SystemDrive") .. "/Build" .. py_ver .. "/CPython"
 
             includedirs { python_root .. "/PC" }
